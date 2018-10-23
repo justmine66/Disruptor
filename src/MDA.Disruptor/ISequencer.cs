@@ -21,7 +21,7 @@ namespace MDA.Disruptor
         bool IsAvailable(long sequence);
 
         /// <summary>
-        /// Add the specified gating sequences to this instance of the Disruptor.  They will safely and atomically added to the list of gating sequences.
+        /// Add the specified gating sequences to this instance of the Disruptor. They will safely and atomically added to the list of gating sequences.
         /// </summary>
         /// <param name="gatingSequences">gatingSequences The sequences to add.</param>
         void AddGatingSequences(params ISequence[] gatingSequences);
