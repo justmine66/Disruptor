@@ -12,7 +12,7 @@ namespace MDA.Disruptor.Impl
 
         private volatile int _running = 0;
 
-        private NoOpEventProcessor(RingBuffer<T> sequencer)
+        public NoOpEventProcessor(RingBuffer<T> sequencer)
         {
             _sequence = new SequencerFollowingSequence(sequencer);
         }
