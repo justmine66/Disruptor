@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{449AA000-D23
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDA.Disruptor", "src\MDA.Disruptor\MDA.Disruptor.csproj", "{EAB1FC45-4925-4F11-9ED5-CC406D78CE43}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{67EF388A-5178-46DB-B5C8-6AAD09C20C43}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{67EF388A-5178-46DB-B5C8-6AAD09C20C43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDA.Disruptor.Test", "tests\MDA.Disruptor.Test\MDA.Disruptor.Test.csproj", "{DA678884-6C2D-48BF-987C-4ED08B4AA25E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDA.Disruptor.Test", "tests\MDA.Disruptor.Test\MDA.Disruptor.Test.csproj", "{DA678884-6C2D-48BF-987C-4ED08B4AA25E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
