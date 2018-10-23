@@ -12,7 +12,7 @@ namespace MDA.Disruptor
     {
         protected IWaitStrategy WaitStrategy;
         protected ISequence Cursor = new Sequence();
-        protected volatile ISequence[] GatingSequences = new ISequence[0];
+        protected ISequence[] GatingSequences = new ISequence[0];
 
         /// <summary>
         /// Create with the specified buffer size and wait strategy.
@@ -39,8 +39,7 @@ namespace MDA.Disruptor
 
         public virtual void AddGatingSequences(params ISequence[] gatingSequences)
         {
-            var sequences = GatingSequences;
-            SequenceGroupManager.AddSequences(ref sequences, this, gatingSequences);
+            SequenceGroupManager.AddSequences(ref GatingSequences, this, gatingSequences);
         }
 
         public abstract void Claim(long sequence);
@@ -88,8 +87,7 @@ namespace MDA.Disruptor
 
         public virtual bool RemoveGatingSequence(ISequence sequence)
         {
-            var sequences = GatingSequences;
-            return SequenceGroupManager.RemoveSequence(ref sequences, sequence);
+            return SequenceGroupManager.RemoveSequence(ref GatingSequences, sequence);
         }
 
         public abstract bool TryNext(out long sequence);
