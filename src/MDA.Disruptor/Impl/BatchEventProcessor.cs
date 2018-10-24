@@ -32,6 +32,18 @@ namespace MDA.Disruptor.Impl
         /// <summary>
         ///  Construct a <see cref="IBatchEventProcessor{TEvent}"/> that will automatically track the progress by updating its sequence when the <see cref="IEventHandler{TEvent}.OnEvent(TEvent,long,bool)"/> method returns.
         /// </summary>
+        /// <param name="dataProvider">to which events are published.</param>
+        /// <param name="sequenceBarrier">on which it is waiting.</param>
+        /// <param name="eventHandler">is the delegate to which events are dispatched.</param>
+        public BatchEventProcessor(
+            IDataProvider<TEvent> dataProvider,
+            ISequenceBarrier sequenceBarrier,
+            IEventHandler<TEvent> eventHandler)
+            : this(dataProvider, sequenceBarrier, eventHandler, null) { }
+
+        /// <summary>
+        ///  Construct a <see cref="IBatchEventProcessor{TEvent}"/> that will automatically track the progress by updating its sequence when the <see cref="IEventHandler{TEvent}.OnEvent(TEvent,long,bool)"/> method returns.
+        /// </summary>
         /// <param name="exceptionHandler"></param>
         /// <param name="dataProvider">to which events are published.</param>
         /// <param name="sequenceBarrier">on which it is waiting.</param>
@@ -159,7 +171,7 @@ namespace MDA.Disruptor.Impl
                 }
                 catch (Exception e)
                 {
-                    _exceptionHandler.HandleEventException(e, nextSequence, @event);
+                    _exceptionHandler?.HandleEventException(e, nextSequence, @event);
                     _sequence.SetValue(nextSequence);
                     nextSequence++;
                 }
@@ -185,7 +197,7 @@ namespace MDA.Disruptor.Impl
             }
             catch (Exception e)
             {
-                _exceptionHandler.HandleOnStartException(e);
+                _exceptionHandler?.HandleOnStartException(e);
             }
         }
 
@@ -202,7 +214,7 @@ namespace MDA.Disruptor.Impl
             }
             catch (Exception e)
             {
-                _exceptionHandler.HandleOnShutdownException(e);
+                _exceptionHandler?.HandleOnShutdownException(e);
             }
         }
 
