@@ -14,6 +14,11 @@ namespace MDA.Disruptor.Impl
         private volatile int _signalNeeded;
         private readonly int _timeoutInMillis;
 
+        public LiteTimeoutBlockingWaitStrategy(int timeoutMilliseconds)
+        {
+            _timeoutInMillis = timeoutMilliseconds;
+        }
+
         public LiteTimeoutBlockingWaitStrategy(TimeSpan timeout)
         {
             _timeoutInMillis = (int)timeout.TotalMilliseconds;
@@ -32,7 +37,6 @@ namespace MDA.Disruptor.Impl
 
         public long WaitFor(long sequence, ISequence cursor, ISequence dependentSequence, ISequenceBarrier barrier)
         {
-            long availableSequence;
             if (cursor.GetValue() < sequence)
             {
                 lock (_mutex)
@@ -55,7 +59,9 @@ namespace MDA.Disruptor.Impl
                 }
             }
 
+            long availableSequence;
             var spinWait = new AggressiveSpinWait();
+
             while ((availableSequence = dependentSequence.GetValue()) < sequence)
             {
                 barrier.CheckAlert();
