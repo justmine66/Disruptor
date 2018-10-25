@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
 namespace MDA.Disruptor.Impl
 {
@@ -10,21 +9,19 @@ namespace MDA.Disruptor.Impl
     {
         private readonly object _mutex = new object();
         private readonly int _timeoutInMillis;
-
-        public TimeoutBlockingWaitStrategy(int timeoutInMillis)
+        public TimeoutBlockingWaitStrategy(int millisecondsTimeout)
         {
-            _timeoutInMillis = timeoutInMillis;
+            _timeoutInMillis = millisecondsTimeout;
         }
 
         public long WaitFor(
-            long sequence, 
-            ISequence cursor, 
-            ISequence dependentSequence, 
+            long sequence,
+            ISequence cursor,
+            ISequence dependentSequence,
             ISequenceBarrier barrier)
         {
-            int timeoutInMillis = _timeoutInMillis;
+            var timeoutInMillis = _timeoutInMillis;
 
-            long availableSequence;
             if (cursor.GetValue() < sequence)
             {
                 lock (_mutex)
@@ -40,6 +37,7 @@ namespace MDA.Disruptor.Impl
                 }
             }
 
+            long availableSequence;
             while ((availableSequence = dependentSequence.GetValue()) < sequence)
             {
                 barrier.CheckAlert();
@@ -54,6 +52,11 @@ namespace MDA.Disruptor.Impl
             {
                 Monitor.PulseAll(_mutex);
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[mutex:{0},millisecondsTimeout:{1}]", _mutex, _timeoutInMillis);
         }
     }
 }
