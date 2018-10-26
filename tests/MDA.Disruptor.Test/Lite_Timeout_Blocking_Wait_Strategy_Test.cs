@@ -1,6 +1,5 @@
 ﻿using MDA.Disruptor.Impl;
 using MDA.Disruptor.Test.Support;
-using System.Diagnostics;
 using Xunit;
 
 namespace MDA.Disruptor.Test
@@ -12,7 +11,7 @@ namespace MDA.Disruptor.Test
         private readonly ISequence _cursor;
         private readonly ISequence _dependent;
 
-        private const int TimeoutMilliseconds = 5000;
+        private const int TimeoutMilliseconds = 1000;
 
         public Lite_Timeout_Blocking_Wait_Strategy_Test()
         {
@@ -25,20 +24,7 @@ namespace MDA.Disruptor.Test
         [Fact(DisplayName = "等待超时异常")]
         public void Should_Timeout_WaitFor()
         {
-            var watch = new Stopwatch();
-            watch.Start();
-
-            try
-            {
-                _strategy.WaitFor(6, _cursor, _dependent, _barrier);
-            }
-            catch (Exceptions.TimeoutException e)
-            {
-            }
-
-            watch.Stop();
-
-            Assert.True(watch.ElapsedMilliseconds >= TimeoutMilliseconds);
+            Assert.Throws<Exceptions.TimeoutException>(() => _strategy.WaitFor(6, _cursor, _dependent, _barrier));
         }
     }
 }
