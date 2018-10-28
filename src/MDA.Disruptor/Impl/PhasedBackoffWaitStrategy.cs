@@ -71,13 +71,13 @@ namespace MDA.Disruptor.Impl
         }
 
         public long WaitFor(
-            long sequence, 
-            ISequence cursor, 
-            ISequence dependentSequence, 
+            long sequence,
+            ISequence cursor,
+            ISequence dependentSequence,
             ISequenceBarrier barrier)
         {
             long startTime = 0;
-            int counter = SpinTries;
+            var counter = SpinTries;
 
             do
             {
@@ -95,7 +95,7 @@ namespace MDA.Disruptor.Impl
                     }
                     else
                     {
-                        long timeDelta = DateTime.Now.Ticks - startTime;
+                        var timeDelta = DateTime.Now.Ticks - startTime;
                         if (timeDelta > _yieldTimeoutTicks)
                         {
                             return _fallbackStrategy.WaitFor(sequence, cursor, dependentSequence, barrier);
