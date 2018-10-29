@@ -26,13 +26,12 @@
         /// <returns></returns>
         public static int UnSignedRightShift(this int value, int pos)
         {
-            if (pos != 0)
-            {
-                var mask = int.MaxValue;
-                value = value >> 1;
-                value = value & mask;
-                value = value >> pos - 1;
-            }
+            if (pos == 0) return value;
+
+            const int mask = int.MaxValue;
+            value = value >> 1;
+            value = value & mask;
+            value = value >> pos - 1;
 
             return value;
         }
