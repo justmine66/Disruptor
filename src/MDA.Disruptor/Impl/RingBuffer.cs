@@ -1,4 +1,4 @@
-﻿using MDA.Disruptor.dsl;
+﻿using MDA.Disruptor.DSL;
 using MDA.Disruptor.Exceptions;
 using MDA.Disruptor.Utility;
 using System;

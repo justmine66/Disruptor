@@ -1,4 +1,4 @@
-﻿using MDA.Disruptor.dsl;
+﻿using MDA.Disruptor.DSL;
 using MDA.Disruptor.Test.Support;
 using System.Collections.Generic;
 using System.Threading;
