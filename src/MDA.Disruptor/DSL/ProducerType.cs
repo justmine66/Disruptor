@@ -9,7 +9,6 @@
         /// Create a RingBuffer with a single event publisher to the RingBuffer.
         /// </summary>
         Single,
-
         /// <summary>
         /// Create a RingBuffer supporting multiple event publishers to the one RingBuffer
         /// </summary>
