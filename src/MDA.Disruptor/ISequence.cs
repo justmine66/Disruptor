@@ -1,7 +1,7 @@
 ﻿namespace MDA.Disruptor
 {
     /// <summary>
-    /// <p>Concurrent sequence class used for tracking the progress of the ring buffer and event processors.Support a number of concurrent operations including CAS and order writes.<p>Also attempts to be more efficient with regards to false sharing by adding padding around the volatile field.
+    /// Concurrent sequence class used for tracking the progress of the ring buffer and event processors.Support a number of concurrent operations including CAS and order writes.<p>Also attempts to be more efficient with regards to false sharing by adding padding around the volatile field.
     /// </summary>
     public interface ISequence
     {
