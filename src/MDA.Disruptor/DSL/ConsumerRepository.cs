@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -43,6 +44,66 @@ namespace MDA.Disruptor.DSL
             var consumerInfo = new EventProcessorInfo<T>(processor, null, null);
             _eventProcessorInfoBySequence[processor.GetSequence()] = consumerInfo;
             _consumerInfos.Add(consumerInfo);
+        }
+
+        public void Add(WorkerPool<T> workerPool, ISequenceBarrier barrier)
+        {
+            var workerPoolInfo = new WorkerPoolInfo<T>(workerPool, barrier);
+            _consumerInfos.Add(workerPoolInfo);
+            foreach (var sequence in workerPool.GetWorkerSequences())
+            {
+                _eventProcessorInfoBySequence[sequence] = workerPoolInfo;
+            }
+        }
+
+        public ISequence[] GetLastSequenceInChain(bool includeStopped)
+        {
+            var lastSequence = new List<ISequence>();
+            foreach (var consumerInfo in _consumerInfos)
+            {
+                if ((includeStopped || consumerInfo.IsRunning()) && consumerInfo.IsEndOfChain())
+                {
+                    var sequences = consumerInfo.GetSequences();
+                    lastSequence.AddRange(sequences);
+                }
+            }
+
+            return lastSequence.ToArray();
+        }
+
+        public IEventProcessor GetEventProcessorFor(IEventHandler<T> handler)
+        {
+            var eventprocessorInfo = GetEventProcessorInfo(handler);
+            if (eventprocessorInfo == null)
+            {
+                throw new ArgumentNullException("The event handler " + handler + " is not processing events.");
+            }
+
+            return eventprocessorInfo.GetEventProcessor();
+        }
+
+        public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] barrierEventProcessors)
+        {
+            foreach (var barrierEventProcessor in barrierEventProcessors)
+            {
+                GetEventProcessorInfo(barrierEventProcessor).MarkAsUsedInBarrier();
+            }
+        }
+
+        public ISequenceBarrier GetBarrierFor(IEventHandler<T> handler)
+        {
+            var consumerInfo = GetEventProcessorInfo(handler);
+            return consumerInfo?.GetBarrier();
+        }
+
+        private EventProcessorInfo<T> GetEventProcessorInfo(IEventHandler<T> handler)
+        {
+            return _eventProcessorInfoByEventHandler[handler];
+        }
+
+        private IConsumerInfo GetEventProcessorInfo(ISequence barrierEventProcessor)
+        {
+            return _eventProcessorInfoBySequence[barrierEventProcessor];
         }
 
         private class IdentityComparer<TKey> : IEqualityComparer<TKey>

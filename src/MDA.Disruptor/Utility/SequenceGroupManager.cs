@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace MDA.Disruptor.Utility
@@ -78,6 +79,22 @@ namespace MDA.Disruptor.Utility
             } while (Interlocked.CompareExchange(ref sequences, newSequences, oldSequences) != oldSequences);
 
             return numToRemove != 0;
+        }
+
+        /// <summary>
+        /// Get an array of <see cref="Sequence"/>s for the passed <see cref="IEventProcessor"/>s
+        /// </summary>
+        /// <param name="processors">for which to get the sequences</param>
+        /// <returns></returns>
+        internal static IEnumerable<ISequence> GetSequencesFor(params IEventProcessor[] processors)
+        {
+            var sequences = new ISequence[processors.Length];
+            for (int i = 0; i < sequences.Length; i++)
+            {
+                sequences[i] = processors[i].GetSequence();
+            }
+
+            return sequences;
         }
 
         private static int CountMatching(ISequence[] sequences, ISequence toMatch)
