@@ -1,4 +1,7 @@
-﻿namespace MDA.Disruptor.DSL
+﻿using System;
+using System.Threading.Tasks;
+
+namespace MDA.Disruptor.DSL
 {
     /// <summary>
     /// Wrapper class to tie together a particular event processing stage.
@@ -60,9 +63,14 @@
             _endOfChain = false;
         }
 
-        public void Start(IExecutor executor)
+        public async Task StartAsync(IExecutor executor)
         {
-            executor.ExecuteAsync(_processor);
+            await executor.ExecuteAsync(_processor);
+        }
+
+        public IEventProcessor GetEventProcessor()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MDA.Disruptor.DSL
                 TaskCreationOptions.LongRunning, _scheduler);
         }
 
-        public void Execute(IRunnable command)
+        private void Execute(IRunnable command)
         {
             try
             {
