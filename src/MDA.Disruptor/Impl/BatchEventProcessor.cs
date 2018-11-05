@@ -28,6 +28,7 @@ namespace MDA.Disruptor.Impl
         private readonly ISequence _sequence;
         private readonly ITimeoutHandler _timeoutHandler;
         private readonly IBatchStartAware _batchStartAware;
+        private readonly ILifecycleAware _lifecycleAware;
 
         /// <summary>
         ///  Construct a <see cref="IBatchEventProcessor{TEvent}"/> that will automatically track the progress by updating its sequence when the <see cref="IEventHandler{TEvent}.OnEvent(TEvent,long,bool)"/> method returns.
@@ -65,14 +66,19 @@ namespace MDA.Disruptor.Impl
                 reporting?.SetSequenceCallback(_sequence);
             }
 
-            if (eventHandler is IBatchStartAware aware && aware != null)
+            if (eventHandler is IBatchStartAware batchStartAware)
             {
-                _batchStartAware = aware;
+                _batchStartAware = batchStartAware;
             }
 
-            if (eventHandler is ITimeoutHandler timeout && timeout != null)
+            if (eventHandler is ITimeoutHandler timeoutHandler)
             {
-                _timeoutHandler = timeout;
+                _timeoutHandler = timeoutHandler;
+            }
+
+            if (eventHandler is ILifecycleAware lifecycleAware)
+            {
+                _lifecycleAware = lifecycleAware;
             }
         }
 
@@ -189,11 +195,9 @@ namespace MDA.Disruptor.Impl
         /// </summary>
         private void NotifyStart()
         {
-            if (!(_eventHandler is ILifecycleAware aware)) return;
-
             try
             {
-                aware?.OnStart();
+                _lifecycleAware?.OnStart();
             }
             catch (Exception e)
             {
@@ -206,11 +210,9 @@ namespace MDA.Disruptor.Impl
         /// </summary>
         private void NotifyShutdown()
         {
-            if (!(_eventHandler is ILifecycleAware aware)) return;
-
             try
             {
-                aware?.OnShutdown();
+                _lifecycleAware?.OnShutdown();
             }
             catch (Exception e)
             {
