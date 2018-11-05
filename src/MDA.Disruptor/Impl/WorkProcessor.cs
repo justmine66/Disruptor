@@ -44,6 +44,7 @@ namespace MDA.Disruptor.Impl
             _workHandler = workHandler;
             _exceptionHandler = exceptionHandler;
             _workSequence = workSequence;
+            _sequence = new Sequence();
 
             if (_workHandler is ITimeoutHandler timeoutHandler)
             {
@@ -96,7 +97,7 @@ namespace MDA.Disruptor.Impl
             var processedSequence = true;
             var cachedAvailableSequence = long.MinValue;
             var nextSequence = _sequence.GetValue();
-            T @event = default(T);
+            var @event = default(T);
 
             while (true)
             {
