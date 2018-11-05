@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MDA.Disruptor.Exceptions;
 using MDA.Disruptor.Impl;
+using MDA.Disruptor.Infrastracture;
 using MDA.Disruptor.Utility;
 
 namespace MDA.Disruptor.Bootstrap

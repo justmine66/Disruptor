@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using MDA.Disruptor.Infrastracture;
 
 namespace MDA.Disruptor.Bootstrap
 {

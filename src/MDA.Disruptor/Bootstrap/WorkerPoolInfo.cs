@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using MDA.Disruptor.Infrastracture;
 
 namespace MDA.Disruptor.Bootstrap
 {

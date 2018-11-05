@@ -1,11 +1,11 @@
-﻿using MDA.Disruptor.Exceptions;
-using MDA.Disruptor.Impl;
-using MDA.Disruptor.Utility;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MDA.Disruptor.Bootstrap;
+using MDA.Disruptor.Exceptions;
+using MDA.Disruptor.Impl;
+using MDA.Disruptor.Utility;
 
-namespace MDA.Disruptor
+namespace MDA.Disruptor.Infrastracture
 {
     /// <summary>
     /// WorkerPool contains a pool of <see cref="WorkProcessor{T}"/>s that will consume sequences so jobs can be farmed out across a pool of workers. Each of the <see cref="WorkProcessor{T}"/>s manage and calls a <see cref="IWorkHandler{TEvent}"/> to process the events.
