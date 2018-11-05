@@ -6,7 +6,7 @@ namespace MDA.Disruptor.Bootstrap
     {
         private IExceptionHandler<T> _delegate;
 
-        public void SwithTo(IExceptionHandler<T> exceptionHandler)
+        public void SwitchTo(IExceptionHandler<T> exceptionHandler)
         {
             // default: FatalExceptionHandler
             _delegate = exceptionHandler;
