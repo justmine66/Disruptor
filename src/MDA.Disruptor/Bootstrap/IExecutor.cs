@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// Providing threads for running the command.

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     public class BasicExecutor : IExecutor
     {

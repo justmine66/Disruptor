@@ -1,11 +1,11 @@
-﻿using MDA.Disruptor.Exceptions;
-using MDA.Disruptor.Impl;
-using MDA.Disruptor.Utility;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MDA.Disruptor.Exceptions;
+using MDA.Disruptor.Impl;
+using MDA.Disruptor.Utility;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// A DSL-style API for setting up the disruptor pattern around a ring buffer(aka the Builder pattern).

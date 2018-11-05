@@ -1,4 +1,4 @@
-﻿namespace MDA.Disruptor.DSL
+﻿namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// A support class used as part of setting an exception handler for a specific event handler.

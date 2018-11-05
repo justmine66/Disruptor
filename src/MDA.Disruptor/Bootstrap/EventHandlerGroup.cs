@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// A group of <see cref="IEventProcessor"/>s used as part of the <see cref="Disruptor{T}"/>.

@@ -1,7 +1,7 @@
-﻿using MDA.Disruptor.DSL;
-using MDA.Disruptor.Test.Support;
+﻿using MDA.Disruptor.Test.Support;
 using System.Collections.Generic;
 using System.Threading;
+using MDA.Disruptor.Bootstrap;
 
 namespace MDA.Disruptor.Test
 {

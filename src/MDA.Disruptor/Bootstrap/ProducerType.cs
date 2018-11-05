@@ -1,4 +1,4 @@
-﻿namespace MDA.Disruptor.DSL
+﻿namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// Defines producer types to support creation of RingBuffer with correct sequencer and publisher.

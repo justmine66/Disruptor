@@ -1,7 +1,7 @@
-﻿using MDA.Disruptor.DSL;
-using MDA.Disruptor.Exceptions;
+﻿using MDA.Disruptor.Exceptions;
 using MDA.Disruptor.Utility;
 using System;
+using MDA.Disruptor.Bootstrap;
 
 namespace MDA.Disruptor.Impl
 {

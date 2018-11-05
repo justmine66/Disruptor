@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     public class WorkerPoolInfo<T> : IConsumerInfo where T : class
     {

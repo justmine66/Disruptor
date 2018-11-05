@@ -1,6 +1,6 @@
 ﻿using MDA.Disruptor.Impl;
 
-namespace MDA.Disruptor.DSL
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// A factory interface to make it possible to include custom event processors in a chain:

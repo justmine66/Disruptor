@@ -1,4 +1,4 @@
-﻿namespace MDA.Disruptor.DSL
+﻿namespace MDA.Disruptor.Bootstrap
 {
     public interface IEventProcessorInfo : IConsumerInfo
     {
