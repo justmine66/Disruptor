@@ -53,20 +53,20 @@ namespace MDA.Disruptor.ConsoleTest
             for (int i = 0; i < number; i++)
             {
                 theads[i] = new Thread((state) =>
-                {
-                    while (true)
                     {
-                        WasteTime();
-                        Console.WriteLine($"Thread {state} ==========");
-                        if (int.TryParse(state.ToString(), out int stateInt) && stateInt < 1)
+                        while (true)
                         {
-                            //Thread.Yield();
-                            //Thread.Sleep(0);
-                            //Thread.Sleep(1);
+                            WasteTime();
+                            Console.WriteLine($"Thread {state} ==========");
+                            if (int.TryParse(state.ToString(), out int stateInt) && stateInt < 1)
+                            {
+                                //Thread.Yield();
+                                //Thread.Sleep(0);
+                                //Thread.Sleep(1);
+                            }
                         }
-                    }
-                })
-                { IsBackground = true };
+                    })
+                    {IsBackground = true};
             }
 
             for (int i = 0; i < number; i++)
@@ -91,20 +91,20 @@ namespace MDA.Disruptor.ConsoleTest
             for (int i = 0; i < number; i++)
             {
                 theads[i] = new Thread((state) =>
-                {
-                    while (true)
                     {
-                        WasteTime();
-                        Console.WriteLine($"Thread {state} ==========");
-                        if (int.TryParse(state.ToString(), out int stateInt) && stateInt < 1)
+                        while (true)
                         {
-                            //Thread.Yield();
-                            //Thread.Sleep(0);
-                            //Thread.Sleep(1);
+                            WasteTime();
+                            Console.WriteLine($"Thread {state} ==========");
+                            if (int.TryParse(state.ToString(), out int stateInt) && stateInt < 1)
+                            {
+                                //Thread.Yield();
+                                //Thread.Sleep(0);
+                                //Thread.Sleep(1);
+                            }
                         }
-                    }
-                })
-                { IsBackground = true };
+                    })
+                    {IsBackground = true};
 
                 if (i > 4)
                 {
@@ -138,3 +138,4 @@ namespace MDA.Disruptor.ConsoleTest
             }
         }
     }
+}
