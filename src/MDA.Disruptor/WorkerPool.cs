@@ -26,7 +26,7 @@ namespace MDA.Disruptor
         /// This option requires a pre-configured <see cref="RingBuffer{TEvent}"/> which must have <see cref="RingBuffer{TEvent}.AddGatingSequences(ISequence[])"/> called before the work pool is started.
         /// </summary>
         /// <param name="ringBuffer">of events to be consumed.</param>
-        /// <param name="sequenceBarrier">on which the workers will depend.</param>
+        /// <param name="barrier">on which the workers will depend.</param>
         /// <param name="exceptionHandler">to callback when an error occurs which is not handled by the <see cref="IWorkHandler{TEvent}"/>s.</param>
         /// <param name="workHandlers">to distribute the work load across.</param>
         public WorkerPool(
