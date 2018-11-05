@@ -164,11 +164,11 @@ namespace MDA.Disruptor.Impl
 
                     _sequence.SetValue(availableSequence);
                 }
-                catch (Exceptions.TimeoutException e)
+                catch (Exceptions.TimeoutException)
                 {
                     NotifyTimeout(_sequence.GetValue());
                 }
-                catch (AlertException e)
+                catch (AlertException)
                 {
                     if (_running != Running)
                     {
