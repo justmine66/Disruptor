@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading;
-using MDA.Disruptor.Exceptions;
+﻿using MDA.Disruptor.Exceptions;
 using MDA.Disruptor.Impl;
+using System;
+using System.Threading;
 
 namespace MDA.Disruptor.Bootstrap
 {
