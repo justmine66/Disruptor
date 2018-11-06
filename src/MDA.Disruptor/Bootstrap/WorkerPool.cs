@@ -13,9 +13,9 @@ namespace MDA.Disruptor.Bootstrap
     public class WorkerPool<T>
     {
         private volatile int _started;
+
         private readonly ISequence _workSequence = new Sequence();
         private readonly RingBuffer<T> _ringBuffer;
-
         // WorkProcessors are created to wrap each of the provided WorkHandlers.
         private readonly WorkProcessor<T>[] _workProcessors;
 
