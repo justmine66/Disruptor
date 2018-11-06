@@ -136,7 +136,7 @@ namespace MDA.Disruptor.Bootstrap
         /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to chain dependencies.</returns>
         public EventHandlerGroup<T> HandleEventsWith(params IEventProcessorFactory<T>[] eventProcessorFactories)
         {
-            var barrierSequences = new Sequence[0];
+            var barrierSequences = new ISequence[0];
             return CreateEventProcessors(barrierSequences, eventProcessorFactories);
         }
 

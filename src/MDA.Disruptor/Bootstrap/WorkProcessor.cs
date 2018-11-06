@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using MDA.Disruptor.Exceptions;
-using MDA.Disruptor.Infrastracture;
+using MDA.Disruptor.Impl;
 
-namespace MDA.Disruptor.Impl
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// A <see cref="WorkProcessor{T}"/> wraps a single <see cref="IWorkHandler{TEvent}"/>, effectively consuming the sequence and ensuring appropriate barriers.

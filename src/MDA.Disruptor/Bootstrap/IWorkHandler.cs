@@ -1,6 +1,6 @@
 ﻿using MDA.Disruptor.Impl;
 
-namespace MDA.Disruptor
+namespace MDA.Disruptor.Bootstrap
 {
     /// <summary>
     /// Callback interface to be implemented for processing units of work as they become available in the <see cref="RingBuffer{TEvent}"/>.
