@@ -3,27 +3,23 @@ using MDA.Disruptor.Test.Support;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
+using MDA.Disruptor.Test.Support.DependencyInjection;
 using Xunit;
 
 namespace MDA.Disruptor.Test
 {
+    [Collection("ObjectContainerCollection")]
     public class Batch_Event_Processor_Test
     {
         private readonly RingBuffer<StubEvent> _ringBuffer;
         private readonly ISequenceBarrier _barrier;
         private readonly IExceptionHandler<StubEvent> _exceptionHandler;
 
-        public Batch_Event_Processor_Test()
+        public Batch_Event_Processor_Test(ObjectContainerFixture provider)
         {
             _ringBuffer = RingBuffer<StubEvent>.CreateMultiProducer(StubEvent.EventFactory, 16);
             _barrier = _ringBuffer.NewBarrier();
-
-            var provider = new ServiceCollection()
-                .AddLogging()
-                .AddScoped<IExceptionHandler<StubEvent>, FatalExceptionHandler<StubEvent>>()
-                .BuildServiceProvider();
-
-            _exceptionHandler = provider.GetService<IExceptionHandler<StubEvent>>();
+            _exceptionHandler = provider.Services.GetService<IExceptionHandler<StubEvent>>();
         }
 
         [Fact(DisplayName = "设置空ExceptionHandler，应该抛出参数异常。")]

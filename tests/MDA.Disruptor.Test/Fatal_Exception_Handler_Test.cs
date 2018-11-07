@@ -3,27 +3,23 @@ using MDA.Disruptor.Impl;
 using MDA.Disruptor.Test.Support;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using MDA.Disruptor.Test.Support.DependencyInjection;
 using Xunit;
 
 namespace MDA.Disruptor.Test
 {
+    [Collection("ObjectContainerCollection")]
     public class Fatal_Exception_Handler_Test
     {
         private readonly Exception _exception;
         private readonly TestEvent _event;
         private readonly IExceptionHandler<TestEvent> _handler;
 
-        public Fatal_Exception_Handler_Test()
+        public Fatal_Exception_Handler_Test(ObjectContainerFixture provider)
         {
             _exception = new Exception();
             _event = new TestEvent();
-
-            var provider = new ServiceCollection()
-                .AddLogging()
-                .AddScoped<IExceptionHandler<TestEvent>, FatalExceptionHandler<TestEvent>>()
-                .BuildServiceProvider();
-
-            _handler = provider.GetService<IExceptionHandler<TestEvent>>();
+            _handler = provider.Services.GetService<IExceptionHandler<TestEvent>>();
         }
 
         [Fact(DisplayName = "测试HandleEventException后抛出RuntimeException异常。")]
