@@ -51,7 +51,7 @@ namespace MDA.Disruptor.Impl
 
         public override long GetHighestPublishedSequence(long nextSequence, long availableSequence)
         {
-            for (long sequence = nextSequence; sequence <= availableSequence; sequence++)
+            for (var sequence = nextSequence; sequence <= availableSequence; sequence++)
             {
                 if (!IsAvailable(sequence))
                 {
@@ -64,8 +64,8 @@ namespace MDA.Disruptor.Impl
 
         public override long GetRemainingCapacity()
         {
-            long consumed = SequenceGroupManager.GetMinimumSequence(GatingSequences, Cursor.GetValue());
-            long produced = Cursor.GetValue();
+            var consumed = SequenceGroupManager.GetMinimumSequence(GatingSequences, Cursor.GetValue());
+            var produced = Cursor.GetValue();
             return BufferSize - (produced - consumed);
         }
 
@@ -154,7 +154,7 @@ namespace MDA.Disruptor.Impl
 
         public override void Publish(long lo, long hi)
         {
-            for (long l = lo; l <= hi; l++)
+            for (var l = lo; l <= hi; l++)
             {
                 SetAvailable(l);
             }
@@ -198,12 +198,12 @@ namespace MDA.Disruptor.Impl
 
         private bool HasAvailableCapacity(ISequence[] gatingSequences, int requiredCapacity, long cursorValue)
         {
-            long wrapPoint = (cursorValue + requiredCapacity) - BufferSize;
-            long cachedGatingSequence = _gatingSequenceCache.GetValue();
+            var wrapPoint = (cursorValue + requiredCapacity) - BufferSize;
+            var cachedGatingSequence = _gatingSequenceCache.GetValue();
 
             if (wrapPoint > cachedGatingSequence || cachedGatingSequence > cursorValue)
             {
-                long minSequence = SequenceGroupManager.GetMinimumSequence(gatingSequences, cursorValue);
+                var minSequence = SequenceGroupManager.GetMinimumSequence(gatingSequences, cursorValue);
                 _gatingSequenceCache.SetValue(minSequence);
 
                 if (wrapPoint > minSequence)
