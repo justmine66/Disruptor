@@ -23,14 +23,7 @@ namespace MDA.Disruptor.Impl
             _sequencer = sequencer;
             _waitStrategy = waitStrategy;
             _cursorSequence = cursorSequence;
-            if (0 == dependentSequences.Length)
-            {
-                _dependentSequence = cursorSequence;
-            }
-            else
-            {
-                _dependentSequence = new FixedSequenceGroup(dependentSequences);
-            }
+            _dependentSequence = 0 == dependentSequences.Length ? cursorSequence : new FixedSequenceGroup(dependentSequences);
         }
 
         public bool IsAlerted => _alerted;
@@ -65,12 +58,7 @@ namespace MDA.Disruptor.Impl
 
             var availableSequence = _waitStrategy.WaitFor(sequence, _cursorSequence, _dependentSequence, this);
 
-            if (availableSequence < sequence)
-            {
-                return availableSequence;
-            }
-
-            return _sequencer.GetHighestPublishedSequence(sequence, availableSequence);
+            return availableSequence < sequence ? availableSequence : _sequencer.GetHighestPublishedSequence(sequence, availableSequence);
         }
     }
 }
