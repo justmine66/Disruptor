@@ -9,7 +9,7 @@ namespace MDA.Disruptor.Bootstrap
     /// Tracks the event processor instance, the event handler instance, and sequence barrier which the stage is attached to.
     /// </remarks>
     /// <typeparam name="T">the type of the configured <see cref="IEventHandler{TEvent}"/></typeparam>
-    public class EventProcessorInfo<T> : IEventProcessorInfo
+    public class EventProcessorInfo<T> : IEventProcessorInfo<T>
     {
         private readonly IEventProcessor _processor;
         private readonly IEventHandler<T> _handler;
@@ -27,9 +27,14 @@ namespace MDA.Disruptor.Bootstrap
             _barrier = barrier;
         }
 
-        public IEventProcessor GetProcessor()
+        public IEventProcessor GetEventProcessor()
         {
             return _processor;
+        }
+
+        public IEventHandler<T> GetHandler()
+        {
+            return _handler;
         }
 
         public ISequenceBarrier GetBarrier()
