@@ -57,6 +57,18 @@ namespace MDA.Disruptor.Bootstrap
         }
 
         /// <summary>
+        /// Set up custom event processors to handle events from the ring buffer.
+        /// The Disruptor will automatically start these processors when <see cref="Disruptor{T}.StartAsync()"/>} is called.
+        /// This method is generally used as part of a chain. For example if the handler <code>A</code> must process events before handler<code>B</code>:
+        /// </summary>
+        /// <param name="eventProcessorFactories">the event processor factories to use to create the event processors that will process events.</param>
+        /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to chain dependencies.</returns>
+        public EventHandlerGroup<T> Then(params IEventProcessorFactory<T>[] eventProcessorFactories)
+        {
+            return HandleEventsWith(eventProcessorFactories);
+        }
+
+        /// <summary>
         /// Set up batch handlers to handle events from the ring buffer. These handlers will only process events after every <see cref="IEventProcessor"/> in this group has processed the event.
         /// 
         /// This method is generally used as part of a chain. For example if <code>A</code> must process events before<code> B</code>: <code>dw.after(A).handleEventsWith(B);</code>
@@ -68,6 +80,27 @@ namespace MDA.Disruptor.Bootstrap
             return _disruptor.CreateEventProcessors(_sequences, handlers);
         }
 
+        /// <summary>
+        /// Set up custom event processors to handle events from the ring buffer. The Disruptor will automatically start these processors when <see cref="Disruptor{T}.StartAsync()"/>} is called.
+        ///
+        /// This method is generally used as part of a chain. For example if <code>A</code> must process events before<code> B</code>:
+        /// <code>dw.after(A).handleEventsWith(B);</code>
+        /// </summary>
+        /// <param name="eventProcessorFactories">the event processor factories to use to create the event processors that will process events.</param>
+        /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to chain dependencies.</returns>
+        public EventHandlerGroup<T> HandleEventsWith(params IEventProcessorFactory<T>[] eventProcessorFactories)
+        {
+            return _disruptor.CreateEventProcessors(_sequences, eventProcessorFactories);
+        }
+
+        /// <summary>
+        /// Set up a worker pool to handle events from the ring buffer. The worker pool will only process events after every <see cref="IEventProcessor"/> in this group has processed the event. Each event will be processed by one of the work handler instances.
+        ///
+        /// This method is generally used as part of a chain. For example if the handler <code>A</code> must process events before the worker pool with handlers<code>B, C</code>:
+        /// <code>dw.handleEventsWith(A).thenHandleEventsWithWorkerPool(B, C);</code>
+        /// </summary>
+        /// <param name="handlers">the work handlers that will process events. Each work handler instance will provide an extra thread in the worker pool.</param>
+        /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to set up a event processor barrier over the created event processors.</returns>
         public EventHandlerGroup<T> HandleEventsWithWorkerPool(params IWorkHandler<T>[] handlers)
         {
             return _disruptor.CreateWorkerPool(_sequences, handlers);
