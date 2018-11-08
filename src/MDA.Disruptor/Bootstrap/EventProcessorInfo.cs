@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace MDA.Disruptor.Bootstrap
 {
@@ -66,11 +65,6 @@ namespace MDA.Disruptor.Bootstrap
         public async Task StartAsync(IExecutor executor)
         {
             await executor.ExecuteAsync(_processor);
-        }
-
-        public IEventProcessor GetEventProcessor()
-        {
-            throw new NotImplementedException();
         }
     }
 }
