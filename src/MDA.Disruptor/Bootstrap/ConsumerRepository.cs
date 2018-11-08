@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using MDA.Disruptor.Infrastracture;
 
 namespace MDA.Disruptor.Bootstrap
 {
@@ -74,13 +73,13 @@ namespace MDA.Disruptor.Bootstrap
 
         public IEventProcessor GetEventProcessorFor(IEventHandler<T> handler)
         {
-            var eventprocessorInfo = GetEventProcessorInfo(handler);
-            if (eventprocessorInfo == null)
+            var eventProcessorInfo = GetEventProcessorInfo(handler);
+            if (eventProcessorInfo == null)
             {
                 throw new ArgumentNullException("The event handler " + handler + " is not processing events.");
             }
 
-            return eventprocessorInfo.GetEventProcessor();
+            return eventProcessorInfo.GetEventProcessor();
         }
 
         public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] barrierEventProcessors)
