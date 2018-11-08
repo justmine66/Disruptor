@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace MDA.Disruptor.Utility
@@ -11,13 +12,7 @@ namespace MDA.Disruptor.Utility
     {
         internal static long GetMinimumSequence(ISequence[] sequences, long minimum = long.MaxValue)
         {
-            for (int i = 0; i < sequences.Length; i++)
-            {
-                var value = sequences[i].GetValue();
-                minimum = Math.Min(value, minimum);
-            }
-
-            return minimum;
+            return sequences.Select(sequence => sequence.GetValue()).Concat(new[] {minimum}).Min();
         }
 
         internal static void AddSequences(ref ISequence[] sequences, ICursored cursor, params ISequence[] sequencesToAdd)
@@ -65,7 +60,7 @@ namespace MDA.Disruptor.Utility
                     break;
                 }
 
-                int oldSize = oldSequences.Length;
+                var oldSize = oldSequences.Length;
                 newSequences = new ISequence[oldSize - numToRemove];
 
                 for (int i = 0, pos = 0; i < oldSize; i++)
@@ -82,14 +77,14 @@ namespace MDA.Disruptor.Utility
         }
 
         /// <summary>
-        /// Get an array of <see cref="Sequence"/>s for the passed <see cref="IEventProcessor"/>s
+        /// Get an array of <see cref="ISequence"/>s for the passed <see cref="IEventProcessor"/>s
         /// </summary>
         /// <param name="processors">for which to get the sequences</param>
         /// <returns></returns>
         internal static IEnumerable<ISequence> GetSequencesFor(params IEventProcessor[] processors)
         {
             var sequences = new ISequence[processors.Length];
-            for (int i = 0; i < sequences.Length; i++)
+            for (var i = 0; i < sequences.Length; i++)
             {
                 sequences[i] = processors[i].GetSequence();
             }
@@ -99,16 +94,7 @@ namespace MDA.Disruptor.Utility
 
         private static int CountMatching(ISequence[] sequences, ISequence toMatch)
         {
-            var count = 0;
-            foreach (var sequence in sequences)
-            {
-                if (sequence == toMatch)
-                {
-                    count++;
-                }
-            }
-
-            return count;
+            return sequences.Count(sequence => sequence == toMatch);
         }
     }
 }
