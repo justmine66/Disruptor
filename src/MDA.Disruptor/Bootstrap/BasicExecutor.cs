@@ -21,11 +21,11 @@ namespace MDA.Disruptor.Bootstrap
             _threads = new BlockingCollection<Thread>();
         }
 
-        public Task ExecuteAsync(IRunnable command)
+        public async Task ExecuteAsync(IRunnable command)
         {
-            return Task.Factory.StartNew(() => Execute(command),
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning, _scheduler);
+            await Task.Factory.StartNew(() => Execute(command),
+               CancellationToken.None,
+               TaskCreationOptions.LongRunning, _scheduler);
         }
 
         private void Execute(IRunnable command)
