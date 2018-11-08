@@ -163,6 +163,16 @@ namespace MDA.Disruptor.Bootstrap
         }
 
         /// <summary>
+        /// Set up a <see cref="WorkerPool{T}"/> to distribute an event to one of a pool of work handler threads. Each event will only be processed by one of the work handlers. The Disruptor will automatically start this processors when <see cref="StartAsync()"/> is called.
+        /// </summary>
+        /// <param name="workHandlers">the work handlers that will process events.</param>
+        /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to chain dependencies.</returns>
+        public EventHandlerGroup<T> HandleEventsWithWorkerPool(params IWorkHandler<T>[] workHandlers)
+        {
+            return CreateWorkerPool(new ISequence[0], workHandlers);
+        }
+
+        /// <summary>
         /// Starts the event processors and returns the fully configured ring buffer.
         /// 
         /// The ring buffer is set up to prevent overwriting any entry that is yet to be processed by the slowest event processor.
@@ -223,20 +233,7 @@ namespace MDA.Disruptor.Bootstrap
             return new EventHandlerGroup<T>(this, _consumerRepository, workerSequences);
         }
 
-        private void UpdateGatingSequencesForNextInChain(ISequence[] barrierSequences, ISequence[] processorSequences)
-        {
-            if (processorSequences.Length > 0)
-            {
-                _ringBuffer.AddGatingSequences(processorSequences);
-                foreach (var barrierSequence in barrierSequences)
-                {
-                    _ringBuffer.RemoveGatingSequence(barrierSequence);
-                }
-                _consumerRepository.UnMarkEventProcessorsAsEndOfChain(barrierSequences);
-            }
-        }
-
-        private EventHandlerGroup<T> CreateEventProcessors(
+        public EventHandlerGroup<T> CreateEventProcessors(
         ISequence[] barrierSequences, IEventProcessorFactory<T>[] processorFactories)
         {
             var eventProcessors = new IEventProcessor[processorFactories.Length];
@@ -261,6 +258,19 @@ namespace MDA.Disruptor.Bootstrap
             if (Interlocked.Exchange(ref _started, 1) == 1)
             {
                 throw new IllegalStateException("Disruptor.start() must only be called once.");
+            }
+        }
+
+        private void UpdateGatingSequencesForNextInChain(ISequence[] barrierSequences, ISequence[] processorSequences)
+        {
+            if (processorSequences.Length > 0)
+            {
+                _ringBuffer.AddGatingSequences(processorSequences);
+                foreach (var barrierSequence in barrierSequences)
+                {
+                    _ringBuffer.RemoveGatingSequence(barrierSequence);
+                }
+                _consumerRepository.UnMarkEventProcessorsAsEndOfChain(barrierSequences);
             }
         }
 
