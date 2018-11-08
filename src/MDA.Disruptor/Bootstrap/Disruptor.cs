@@ -191,7 +191,7 @@ namespace MDA.Disruptor.Bootstrap
             var processorSequences = new ISequence[eventHandlers.Length];
             var barrier = _ringBuffer.NewBarrier(barrierSequences);
 
-            for (int i = 0; i < eventHandlers.Length; i++)
+            for (var i = 0; i < eventHandlers.Length; i++)
             {
                 var eventHandler = eventHandlers[i];
                 var batchEventProcessor = new BatchEventProcessor<T>(_ringBuffer, barrier, eventHandler);
