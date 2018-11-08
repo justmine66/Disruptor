@@ -1,7 +1,8 @@
 ﻿namespace MDA.Disruptor.Bootstrap
 {
-    public interface IEventProcessorInfo : IConsumerInfo
+    public interface IEventProcessorInfo<in T> : IConsumerInfo
     {
-        IEventProcessor GetProcessor();
+        IEventProcessor GetEventProcessor();
+        IEventHandler<T> GetHandler();
     }
 }
