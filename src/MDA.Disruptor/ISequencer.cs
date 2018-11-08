@@ -1,6 +1,4 @@
-﻿using MDA.Disruptor.Utility;
-
-namespace MDA.Disruptor
+﻿namespace MDA.Disruptor
 {
     /// <summary>
     /// Coordinates claiming sequences for access to a data structure while tracking dependent <see cref="ISequence"/>s
