@@ -217,7 +217,7 @@ namespace MDA.Disruptor.Impl
 
         private int CalculateIndex(long sequence)
         {
-            //算法: sequence & (array length－1) = array index
+            //algorithm: sequence & (array length－1) = array index, faster than mod.
             return ((int)sequence) & _indexMask;
         }
 
