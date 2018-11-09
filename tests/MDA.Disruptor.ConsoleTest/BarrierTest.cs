@@ -13,11 +13,13 @@ namespace MDA.Disruptor.ConsoleTest
             var source = new CancellationTokenSource();
             _token = source.Token;
             _sync = new Barrier(3);
+
             var charlie = new Thread(() => DriveToBoston("Charlie", TimeSpan.FromSeconds(1)));
-            charlie.Start();
             var mac = new Thread(() => DriveToBoston("Mac", TimeSpan.FromSeconds(2)));
-            mac.Start();
             var dennis = new Thread(() => DriveToBoston("Dennis", TimeSpan.FromSeconds(3)));
+
+            mac.Start();
+            charlie.Start();
             dennis.Start();
             //source.Cancel(); 
             charlie.Join();
