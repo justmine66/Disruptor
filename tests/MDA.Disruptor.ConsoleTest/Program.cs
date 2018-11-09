@@ -11,6 +11,7 @@ namespace MDA.Disruptor.ConsoleTest
             //CountdownEventTest.Test();
             //CountdownEventTest.Test1();
             //YieldSleep0Sleep1Test.Test();
+            BarrierTest.Test();
 
             Console.Read();
         }
