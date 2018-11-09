@@ -153,7 +153,7 @@ namespace MDA.Disruptor.Bootstrap
             }
 
             var sequences = new ISequence[processors.Length];
-            for (int i = 0; i < processors.Length; i++)
+            for (var i = 0; i < processors.Length; i++)
             {
                 sequences[i] = processors[i].GetSequence();
             }
@@ -263,15 +263,14 @@ namespace MDA.Disruptor.Bootstrap
 
         private void UpdateGatingSequencesForNextInChain(ISequence[] barrierSequences, ISequence[] processorSequences)
         {
-            if (processorSequences.Length > 0)
+            if (processorSequences.Length <= 0) return;
+
+            _ringBuffer.AddGatingSequences(processorSequences);
+            foreach (var barrierSequence in barrierSequences)
             {
-                _ringBuffer.AddGatingSequences(processorSequences);
-                foreach (var barrierSequence in barrierSequences)
-                {
-                    _ringBuffer.RemoveGatingSequence(barrierSequence);
-                }
-                _consumerRepository.UnMarkEventProcessorsAsEndOfChain(barrierSequences);
+                _ringBuffer.RemoveGatingSequence(barrierSequence);
             }
+            _consumerRepository.UnMarkEventProcessorsAsEndOfChain(barrierSequences);
         }
 
         public override string ToString()
