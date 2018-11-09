@@ -1,10 +1,9 @@
-﻿using System;
+﻿using MDA.Disruptor.Exceptions;
+using MDA.Disruptor.Impl;
+using MDA.Disruptor.Utility;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MDA.Disruptor.Exceptions;
-using MDA.Disruptor.Impl;
-using MDA.Disruptor.Infrastracture;
-using MDA.Disruptor.Utility;
 
 namespace MDA.Disruptor.Bootstrap
 {
@@ -51,7 +50,7 @@ namespace MDA.Disruptor.Bootstrap
         /// <param name="ringBufferSize">the size of the ring buffer.</param>
         /// <param name="taskScheduler">a <see cref="TaskScheduler"/> to create threads to for processors.</param>
         public Disruptor(IEventFactory<T> eventFactory, int ringBufferSize, TaskScheduler taskScheduler)
-            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new BasicExecutor(taskScheduler))
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new NewSingleThreadExecutor(taskScheduler))
         {
         }
 
@@ -62,7 +61,7 @@ namespace MDA.Disruptor.Bootstrap
         /// <param name="ringBufferSize">the size of the ring buffer.</param>
         /// <param name="taskScheduler">a <see cref="TaskScheduler"/> to create threads to for processors.</param>
         public Disruptor(Func<T> eventFactory, int ringBufferSize, TaskScheduler taskScheduler)
-            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new BasicExecutor(taskScheduler))
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new NewSingleThreadExecutor(taskScheduler))
         {
         }
 
@@ -82,7 +81,7 @@ namespace MDA.Disruptor.Bootstrap
             IWaitStrategy waitStrategy)
             : this(
             RingBuffer<T>.Create(producerType, eventFactory, ringBufferSize, waitStrategy),
-            new BasicExecutor(taskScheduler))
+            new NewSingleThreadExecutor(taskScheduler))
         {
         }
 
@@ -107,7 +106,7 @@ namespace MDA.Disruptor.Bootstrap
             IWaitStrategy waitStrategy)
             : this(
             RingBuffer<T>.Create(producerType, eventFactory, ringBufferSize, waitStrategy),
-            new BasicExecutor(taskScheduler))
+            new NewSingleThreadExecutor(taskScheduler))
         {
         }
 

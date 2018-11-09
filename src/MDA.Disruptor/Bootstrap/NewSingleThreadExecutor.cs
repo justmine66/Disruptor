@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace MDA.Disruptor.Bootstrap
 {
-    public class BasicExecutor : IExecutor
+    public class NewSingleThreadExecutor : IExecutor
     {
         private readonly TaskScheduler _scheduler;
 
         private BlockingCollection<Thread> _threads;
 
-        public BasicExecutor(TaskScheduler scheduler)
+        public NewSingleThreadExecutor(TaskScheduler scheduler)
         {
             _scheduler = scheduler;
             Initialize();
