@@ -83,6 +83,11 @@ namespace MDA.Disruptor.Bootstrap
             return eventProcessorInfo.GetEventProcessor();
         }
 
+        public ISequence GetSequenceFor(IEventHandler<T> handler)
+        {
+            return GetEventProcessorFor(handler).GetSequence();
+        }
+
         public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] barrierEventProcessors)
         {
             foreach (var barrierEventProcessor in barrierEventProcessors)
