@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MDA.Disruptor.Bootstrap
+namespace MDA.Disruptor.Bootstrap.Impl
 {
     /// <summary>
     /// Wrapper class to tie together a particular event processing stage.

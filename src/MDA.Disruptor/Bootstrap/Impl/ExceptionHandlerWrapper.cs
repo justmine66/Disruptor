@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MDA.Disruptor.Bootstrap
+namespace MDA.Disruptor.Bootstrap.Impl
 {
     public class ExceptionHandlerWrapper<T> : IExceptionHandler<T>
     {

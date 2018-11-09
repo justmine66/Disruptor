@@ -4,6 +4,7 @@ using MDA.Disruptor.Utility;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MDA.Disruptor.Bootstrap.Impl;
 
 namespace MDA.Disruptor.Bootstrap
 {

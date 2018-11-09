@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MDA.Disruptor.Bootstrap
+namespace MDA.Disruptor.Bootstrap.Impl
 {
     public class NewSingleThreadExecutor : IExecutor
     {
