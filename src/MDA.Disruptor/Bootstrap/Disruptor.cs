@@ -1,10 +1,11 @@
-﻿using MDA.Disruptor.Exceptions;
+﻿using MDA.Disruptor.Bootstrap.Impl;
+using MDA.Disruptor.Exceptions;
 using MDA.Disruptor.Impl;
 using MDA.Disruptor.Utility;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MDA.Disruptor.Bootstrap.Impl;
 
 namespace MDA.Disruptor.Bootstrap
 {
@@ -42,6 +43,8 @@ namespace MDA.Disruptor.Bootstrap
         {
             _ringBuffer = ringBuffer;
             _executor = executor;
+            _consumerRepository=new ConsumerRepository<T>();
+            _exceptionHandler= new ExceptionHandlerWrapper<T>();
         }
 
         /// <summary>
@@ -173,6 +176,116 @@ namespace MDA.Disruptor.Bootstrap
         }
 
         /// <summary>
+        /// Specify an exception handler to be used for event handlers and worker pools created by this Disruptor.
+        /// The exception handler will be used by existing and future event handlers and worker pools created by this Disruptor instance.
+        /// </summary>
+        /// <param name="exceptionHandler">the exception handler to use.</param>
+        public void SetDefaultExceptionHandler(IExceptionHandler<T> exceptionHandler)
+        {
+            _exceptionHandler = exceptionHandler;
+        }
+
+        /// <summary>
+        /// Override the default exception handler for a specific handler.
+        /// <code>disruptor.handleExceptionsIn(eventHandler).with(exceptionHandler);</code>
+        /// </summary>
+        /// <param name="eventHandler">the event handler to set a different exception handler for.</param>
+        /// <returns>an ExceptionHandlerSetting dsl object - intended to be used by chaining the with method call.</returns>
+        public ExceptionHandlerSetting<T> HandleExceptionsFor(IEventHandler<T> eventHandler)
+        {
+            return new ExceptionHandlerSetting<T>(eventHandler, _consumerRepository);
+        }
+
+        /// <summary>
+        /// Create a group of event handlers to be used as a dependency.
+        /// For example if the handler <code>A</code> must process events before handler <code>B</code>:
+        /// <code>dw.After(A).HandleEventsWith(B);</code>
+        /// </summary>
+        /// <param name="handlers">the event handlers, previously set up with <see cref="HandleEventsWith(MDA.Disruptor.IEventHandler{T}[])"/>, that will form the barrier for subsequent handlers or processors.</param>
+        /// <returns>an <see cref="EventHandlerGroup{T}"/> that can be used to setup a dependency barrier over the specified event handlers.</returns>
+        public EventHandlerGroup<T> After(params IEventHandler<T>[] handlers)
+        {
+            var sequences = handlers.Select(it => _consumerRepository.GetSequenceFor(it));
+            return new EventHandlerGroup<T>(this, _consumerRepository, sequences);
+        }
+
+        /// <summary>
+        /// Create a group of event processors to be used as a dependency.
+        /// </summary>
+        /// <param name="processors">the event processors, previously set up with <see cref="HandleEventsWith(MDA.Disruptor.IEventProcessor[]) "/>, that will form the barrier for subsequent handlers or processors.</param>
+        /// <returns>an <see cref="EventHandlerGroup{T}"/> that can be used to setup a {@link SequenceBarrier} over the specified event processors.</returns>
+        public EventHandlerGroup<T> After(params IEventProcessor[] processors)
+        {
+            foreach (var processor in processors)
+            {
+                _consumerRepository.Add(processor);
+            }
+
+            return new EventHandlerGroup<T>(this, _consumerRepository, SequenceGroupManager.GetSequencesFor(processors));
+        }
+
+        /// <summary>
+        /// Publish an event to the ring buffer.
+        /// </summary>
+        /// <param name="eventTranslator">the translator that will load data into the event.</param>
+        public void PublishEvent(IEventTranslator<T> eventTranslator)
+        {
+            _ringBuffer.PublishEvent(eventTranslator);
+        }
+
+        /// <summary>
+        /// Publish an event to the ring buffer.
+        /// </summary>
+        /// <typeparam name="TArg">Class of the user supplied argument.</typeparam>
+        /// <param name="eventTranslator">the translator that will load data into the event.</param>
+        /// <param name="arg">A single argument to load into the event.</param>
+        public void PublishEvent<TArg>(IEventTranslatorOneArg<T, TArg> eventTranslator, TArg arg)
+        {
+            _ringBuffer.PublishEvent(eventTranslator, arg);
+        }
+
+        /// <summary>
+        /// Publish a batch of events to the ring buffer.
+        /// </summary>
+        /// <typeparam name="TArg">Class of the user supplied argument.</typeparam>
+        /// <param name="eventTranslator">the translator that will load data into the event.</param>
+        /// <param name="args">An array single arguments to load into the events. One Per event.</param>
+        public void PublishEvents<TArg>(IEventTranslatorOneArg<T, TArg> eventTranslator, TArg[] args)
+        {
+            _ringBuffer.PublishEvents(eventTranslator, args);
+        }
+
+        /// <summary>
+        /// Publish an event to the ring buffer.
+        /// </summary>
+        /// <typeparam name="TArg0">Class of the user supplied argument.</typeparam>
+        /// <typeparam name="TArg1">Class of the user supplied argument.</typeparam>
+        /// <param name="eventTranslator">the translator that will load data into the event.</param>
+        /// <param name="arg0">The first argument to load into the event</param>
+        /// <param name="arg1">The second argument to load into the event</param>
+        public void PublishEvent<TArg0, TArg1>(IEventTranslatorTwoArg<T, TArg0, TArg1> eventTranslator, TArg0 arg0,
+            TArg1 arg1)
+        {
+            _ringBuffer.PublishEvent(eventTranslator, arg0, arg1);
+        }
+
+        /// <summary>
+        /// Publish an event to the ring buffer.
+        /// </summary>
+        /// <typeparam name="TArg0">Class of the user supplied argument.</typeparam>
+        /// <typeparam name="TArg1">Class of the user supplied argument.</typeparam>
+        /// <typeparam name="TArg2">Class of the user supplied argument.</typeparam>
+        /// <param name="eventTranslator">the translator that will load data into the event.</param>
+        /// <param name="arg0">The first argument to load into the event</param>
+        /// <param name="arg1">The second argument to load into the event</param>
+        /// <param name="arg2">The third argument to load into the event</param>
+        public void PublishEvent<TArg0, TArg1, TArg2>(IEventTranslatorThreeArg<T, TArg0, TArg1, TArg2> eventTranslator, TArg0 arg0,
+            TArg1 arg1, TArg2 arg2)
+        {
+            _ringBuffer.PublishEvent(eventTranslator, arg0, arg1, arg2);
+        }
+
+        /// <summary>
         /// Starts the event processors and returns the fully configured ring buffer.
         /// 
         /// The ring buffer is set up to prevent overwriting any entry that is yet to be processed by the slowest event processor.
@@ -190,6 +303,94 @@ namespace MDA.Disruptor.Bootstrap
             }
 
             return _ringBuffer;
+        }
+
+        /// <summary>
+        /// Calls <see cref="IEventProcessor.Halt()"/> on all of the event processors created via this disruptor.
+        /// </summary>
+        public void Halt()
+        {
+            foreach (var consumer in _consumerRepository)
+            {
+                consumer.Halt();
+            }
+        }
+
+        /// <summary>
+        /// Waits until all events currently in the disruptor have been processed by all event processors and then halts the processors. It is critical that publishing to the ring buffer has stopped before calling this method, otherwise it may never return.
+        /// </summary>
+        public void Shutdown()
+        {
+            try
+            {
+                Shutdown(Timeout.InfiniteTimeSpan);
+            }
+            catch (Exceptions.TimeoutException e)
+            {
+                _exceptionHandler.HandleOnShutdownException(e);
+            }
+        }
+
+        /// <summary>
+        /// Waits until all events currently in the disruptor have been processed by all event processors and then halts the processors.
+        /// </summary>
+        /// <remarks>
+        /// This method will not shutdown the executor, nor will it await the final termination of the processor threads.
+        /// </remarks>
+        /// <param name="timeout">the amount of time to wait for all events to be processed. <code>-1</code> will give an infinite timeout</param>
+        public void Shutdown(TimeSpan timeout)
+        {
+            var timeOutAt = DateTime.UtcNow.Add(timeout);
+            while (HasBacklog())
+            {
+                if (timeOutAt.Ticks > 0 && DateTime.UtcNow > timeOutAt)
+                {
+                    throw Exceptions.TimeoutException.Instance;
+                }
+            }
+
+            Halt();
+        }
+
+        /// <summary>
+        /// The <see cref="RingBuffer{T}"/> used by this Disruptor. This is useful for creating custom
+        /// event processors if the behaviour of <see cref="BatchEventProcessor{T}"/> is not suitable.
+        /// </summary>
+        public RingBuffer<T> RingBuffer => _ringBuffer;
+
+        /// <summary>
+        /// Get the value of the cursor indicating the published sequence.
+        /// </summary>
+        public long Cursor => _ringBuffer.GetCursor();
+
+        /// <summary>
+        /// The capacity of the data structure to hold entries.
+        /// </summary>
+        public long BufferSize => _ringBuffer.GetBufferSize();
+
+        /// <summary>
+        /// Get the event for a given sequence in the RingBuffer.
+        /// </summary>
+        /// <param name="sequence">for the event.</param>
+        public T this[long sequence] => _ringBuffer.Get(sequence);
+
+        /// <summary>
+        /// Get the <see cref="ISequenceBarrier"/> used by a specific handler. Note that the <see cref="ISequenceBarrier"/> may be shared by multiple event handlers.
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <returns></returns>
+        public ISequenceBarrier GetBarrierFor(IEventHandler<T> handler)
+        {
+            return _consumerRepository.GetBarrierFor(handler);
+        }
+
+        /// <summary>
+        /// Gets the sequence value for the specified event handlers.
+        /// </summary>
+        /// <param name="handler">to get the sequence for.</param>
+        public long GetSequenceValueFor(IEventHandler<T> handler)
+        {
+            return _consumerRepository.GetSequenceFor(handler).GetValue();
         }
 
         public EventHandlerGroup<T> CreateEventProcessors(
@@ -280,6 +481,23 @@ namespace MDA.Disruptor.Bootstrap
             ", started=" + _started +
             ", executor=" + _executor +
             '}';
+        }
+
+        /// <summary>
+        /// Confirms if all messages have been consumed by all event processors.
+        /// </summary>
+        private bool HasBacklog()
+        {
+            var cursor = _ringBuffer.GetCursor();
+            foreach (var sequence in _consumerRepository.GetLastSequenceInChain(false))
+            {
+                if (cursor > sequence.GetValue())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
