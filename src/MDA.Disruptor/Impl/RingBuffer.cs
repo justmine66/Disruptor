@@ -542,7 +542,7 @@ namespace MDA.Disruptor.Impl
                 TranslateAndPublish(translator, sequence, arg0, arg1);
                 return true;
             }
-            catch (InsufficientCapacityException e)
+            catch (InsufficientCapacityException)
             {
                 return false;
             }
