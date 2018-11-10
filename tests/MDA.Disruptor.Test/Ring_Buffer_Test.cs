@@ -111,7 +111,7 @@ namespace MDA.Disruptor.Test
 
             Assert.Throws<Exception>(() =>
             {
-                for (int i = 0; i < _ringBuffer.GetBufferSize(); i++)
+                for (var i = 0; i < _ringBuffer.GetBufferSize(); i++)
                 {
                     if (_ringBuffer.TryNext(out long sequence))
                     {
