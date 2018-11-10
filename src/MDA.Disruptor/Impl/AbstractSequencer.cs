@@ -1,9 +1,8 @@
-﻿using MDA.Disruptor.Extensions;
-using MDA.Disruptor.Impl;
+﻿using System;
+using MDA.Disruptor.Extensions;
 using MDA.Disruptor.Utility;
-using System;
 
-namespace MDA.Disruptor
+namespace MDA.Disruptor.Impl
 {
     /// <summary>
     /// Base class for the various sequencer types (single/multi). Provides common functionality like the management of gating sequences(add/remove) and ownership of the current cursor.
