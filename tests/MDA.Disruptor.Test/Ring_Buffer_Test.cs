@@ -104,21 +104,18 @@ namespace MDA.Disruptor.Test
             Assert.False(ringBuffer.TryPublishEvent(StubEvent.Translator, 4, "4"));
         }
 
-        [Fact]
-        public void Should_Throw_Exception_If_BufferIsFull()
+        [Fact(DisplayName = "当buffer装满时，应该无法再次申请序号，并抛出异常。")]
+        public void Should_Throw_Exception_If_Buffer_Is_Full()
         {
             _ringBuffer.AddGatingSequences(new Sequence(_ringBuffer.GetBufferSize()));
 
-            Assert.Throws<Exception>(() =>
+            for (var i = 0; i < _ringBuffer.GetBufferSize(); i++)
             {
-                for (var i = 0; i < _ringBuffer.GetBufferSize(); i++)
+                if (_ringBuffer.TryNext(out var sequence))
                 {
-                    if (_ringBuffer.TryNext(out var sequence))
-                    {
-                        _ringBuffer.Publish(sequence);
-                    }
+                    _ringBuffer.Publish(sequence);
                 }
-            });
+            }
 
             Assert.Throws<InsufficientCapacityException>(() =>
             {
