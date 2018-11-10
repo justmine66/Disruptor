@@ -113,7 +113,7 @@ namespace MDA.Disruptor.Test
             {
                 for (var i = 0; i < _ringBuffer.GetBufferSize(); i++)
                 {
-                    if (_ringBuffer.TryNext(out long sequence))
+                    if (_ringBuffer.TryNext(out var sequence))
                     {
                         _ringBuffer.Publish(sequence);
                     }
@@ -122,7 +122,7 @@ namespace MDA.Disruptor.Test
 
             Assert.Throws<InsufficientCapacityException>(() =>
             {
-                _ringBuffer.TryNext(out long sequence);
+                _ringBuffer.TryNext(out var sequence);
             });
         }
 
