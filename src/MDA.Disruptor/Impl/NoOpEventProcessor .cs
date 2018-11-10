@@ -3,9 +3,10 @@ using System.Threading;
 
 namespace MDA.Disruptor.Impl
 {
-    /// <summary p="This is useful in tests or for pre-filling a <see cref="RingBuffer"/> from a publisher.">
+    /// <summary>
     /// No operation version of a <see cref="IEventProcessor"/> that simply tracks a <see cref="ISequence"/>.
     /// </summary>
+    /// <remarks>This is useful in tests or for pre-filling a <see cref="RingBuffer{TEvent}"/> from a publisher.</remarks>
     public class NoOpEventProcessor<T> : IEventProcessor
     {
         private readonly SequencerFollowingSequence _sequence;
