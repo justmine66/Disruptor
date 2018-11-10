@@ -96,7 +96,7 @@ namespace MDA.Disruptor.Impl
                 if (wrapPoint > cachedGatingSequence || cachedGatingSequence > current)
                 {
                     var gatingSequence = SequenceGroupManager.GetMinimumSequence(GatingSequences, current);
-
+                    // ring buffer is full, must wait for consumption to catch up.
                     if (wrapPoint > gatingSequence)
                     {
                         //should we spin based on the wait strategy?
