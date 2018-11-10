@@ -69,7 +69,7 @@ namespace MDA.Disruptor.Test
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "只要门控序号跟上，应该能够持续发布事件。")]
         public void Should_Wrap()
         {
             var numMessages = _ringBuffer.GetBufferSize();
@@ -89,7 +89,7 @@ namespace MDA.Disruptor.Test
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "门控序号未跟上，当buffer装满时，应该不能够持续发布事件。")]
         public void Should_Prevent_Wrapping()
         {
             var sequence = new Sequence();
