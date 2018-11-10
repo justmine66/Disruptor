@@ -39,8 +39,7 @@
         ISequenceBarrier NewBarrier(params ISequence[] sequencesToTrack);
 
         /// <summary>
-        /// Get the minimum sequence value from all of the gating sequences
-        /// added to this ringBuffer.
+        /// Get the minimum sequence value from all of the gating sequences added to this ringBuffer.
         /// </summary>
         /// <returns>The minimum gating sequence or the cursor sequence if no sequences have been added.</returns>
         long GetMinimumSequence();
