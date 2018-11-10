@@ -58,7 +58,6 @@ namespace MDA.Disruptor.Test
                 _ringBuffer.PublishEvent(StubEvent.Translator, i, "");
             }
 
-
             var expectedSequence = numMessages - 1;
             var availableSequence = _barrier.WaitFor(expectedSequence);
 
