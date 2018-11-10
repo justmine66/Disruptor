@@ -19,7 +19,7 @@ namespace MDA.Disruptor.Infrastracture
         {
             if (NextSpinWillYield)
             {
-                int yieldsSoFar = (_count >= YieldThreshold ? _count - YieldThreshold : _count);
+                var yieldsSoFar = (_count >= YieldThreshold ? _count - YieldThreshold : _count);
 
                 if ((yieldsSoFar % Sleep0EveryHowManyTimes) == (Sleep0EveryHowManyTimes - 1))
                 {
