@@ -761,7 +761,7 @@ namespace MDA.Disruptor.Impl
             {
                 var sequence = initialSequence;
                 var batchEndsAt = batchStartsAt + batchSize;
-                for (int i = batchStartsAt; i < batchEndsAt; i++)
+                for (var i = batchStartsAt; i < batchEndsAt; i++)
                 {
                     var translator = translators[i];
                     translator.TranslateTo(Get(sequence), sequence++);
@@ -785,7 +785,7 @@ namespace MDA.Disruptor.Impl
             {
                 var sequence = initialSequence;
                 var batchEndsAt = batchStartsAt + batchSize;
-                for (int i = batchStartsAt; i < batchEndsAt; i++)
+                for (var i = batchStartsAt; i < batchEndsAt; i++)
                 {
                     translator.TranslateTo(Get(sequence), sequence++, arg0[i]);
                 }
@@ -807,7 +807,7 @@ namespace MDA.Disruptor.Impl
             {
                 var sequence = initialSequence;
                 var batchEndsAt = batchStartsAt + batchSize;
-                for (int i = batchStartsAt; i < batchEndsAt; i++)
+                for (var i = batchStartsAt; i < batchEndsAt; i++)
                 {
                     translator.TranslateTo(Get(sequence), sequence++, arg0[i], arg1[i]);
                 }
@@ -828,7 +828,7 @@ namespace MDA.Disruptor.Impl
             {
                 var sequence = initialSequence;
                 var batchEndsAt = batchStartsAt + batchSize;
-                for (int i = batchStartsAt; i < batchEndsAt; i++)
+                for (var i = batchStartsAt; i < batchEndsAt; i++)
                 {
                     translator.TranslateTo(Get(sequence), sequence++, arg0[i], arg1[i], arg2[i]);
                 }
@@ -846,9 +846,9 @@ namespace MDA.Disruptor.Impl
             var initialSequence = finalSequence - (batchSize - 1);
             try
             {
-                long sequence = initialSequence;
+                var sequence = initialSequence;
                 var batchEndsAt = batchStartsAt + batchSize;
-                for (int i = batchStartsAt; i < batchEndsAt; i++)
+                for (var i = batchStartsAt; i < batchEndsAt; i++)
                 {
                     translator.TranslateTo(Get(sequence), sequence++, args[i]);
                 }
