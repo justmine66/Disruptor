@@ -1,6 +1,6 @@
 ﻿namespace MDA.Disruptor
 {
-    public interface IEventSink<TEvent>
+    public interface IEventSink<out TEvent>
     {
         /// <summary>
         /// Publishes an event to the ring buffer. It handles claiming the next sequence, getting the current(uninitialised) event from the ring buffer and publishing the claimed sequence after translation.
