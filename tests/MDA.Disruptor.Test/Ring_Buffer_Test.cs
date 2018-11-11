@@ -322,9 +322,287 @@ namespace MDA.Disruptor.Test
         }
 
         [Fact]
-        public void Should_Publish_Events_OneArg_Batch_Size_Of_One()
+        public void Should_Publish_Events_One_Arg_Batch_Size_Of_One()
         {
             var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new OneArgEventTranslator();
+
+            ringBuffer.PublishEvents(translator, 0, 1, new[] { "Boo" });
+            Assert.True(ringBuffer.TryPublishEvents(translator, 0, 1, new[] { "Boo" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "Boo-0" }, new object[1] { "Boo-1" }));
+        }
+
+        [Fact]
+        public void Should_Publish_Events_One_Arg_Within_Batch()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new OneArgEventTranslator();
+
+            ringBuffer.PublishEvents(translator, 1, 2, new[] { "Boo", "Foo", "Zoo" });
+            Assert.True(ringBuffer.TryPublishEvents(translator, 1, 2, new[] { "Boo", "Foo", "Zoo" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "Foo-0" }, new object[1] { "Zoo-1" }, new object[1] { "Foo-2" }, new object[1] { "Zoo-3" }));
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Two_Arg()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new TwoArgEventTranslator();
+
+            ringBuffer.PublishEvents(translator, new[] { "Foo", "Hoo" }, new[] { "Bar", "Car" });
+            Assert.True(ringBuffer.TryPublishEvents(translator, new[] { "Foo", "Hoo" }, new[] { "Bar", "Car" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "FooBar-0" }, new object[1] { "HooCar-1" }, new object[1] { "FooBar-2" }, new object[1] { "HooCar-3" }));
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_Two_Arg_If_Batch_Size_Is_Bigger_Than_RingBuffer()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new TwoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(
+                translator,
+                new[] { "Foo", "Foo", "Foo", "Foo", "Foo" },
+                new[] { "Bar", "Bar", "Bar", "Bar", "Bar" }));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Two_Arg_With_Batch_Size_Of_One()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new TwoArgEventTranslator();
+
+            ringBuffer.PublishEvents(translator, 0, 1, new[] { "Foo0", "Foo1" }, new[] { "Bar0", "Bar1" });
+            ringBuffer.TryPublishEvents(translator, 0, 1, new[] { "Foo2", "Foo3" }, new[] { "Bar2", "Bar3" });
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Two_Arg_Within_Batch()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new TwoArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+            translator, 1, 2, new[] { "Foo0", "Foo1", "Foo2" }, new[] { "Bar0", "Bar1", "Bar2" });
+            ringBuffer.TryPublishEvents(
+                translator, 1, 2, new[] { "Foo3", "Foo4", "Foo5" }, new[] { "Bar3", "Bar4", "Bar5" });
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "Foo1Bar1-0" }, new object[1] { "Foo2Bar2-1" }, new object[1] { "Foo4Bar4-2" }, new object[1] { "Foo5Bar5-3" }));
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Three_Arg()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new ThreeArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+            translator, new[] { "Foo", "Foo" }, new[] { "Bar", "Bar" }, new[] { "Baz", "Baz" });
+            ringBuffer.TryPublishEvents(
+                translator, new[] { "Foo", "Foo" }, new[] { "Bar", "Bar" }, new[] { "Baz", "Baz" });
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "FooBarBaz-0" }, new object[1] { "FooBarBaz-1" }, new object[1] { "FooBarBaz-2" }, new object[1] { "FooBarBaz-3" }));
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_Three_Arg_If_Batch_Is_Larger_Than_RingBuffer()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new ThreeArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(
+                translator,
+                new[] { "Foo", "Foo", "Foo", "Foo", "Foo" },
+                new[] { "Bar", "Bar", "Bar", "Bar", "Bar" },
+                new[] { "Baz", "Baz", "Baz", "Baz", "Baz" }));
+
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Three_Arg_Batch_Size_Of_One()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new ThreeArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+           translator, 0, 1, new[] { "Foo", "Foo" }, new[] { "Bar", "Bar" }, new[] { "Baz", "Baz" });
+            ringBuffer.TryPublishEvents(
+                translator, 0, 1, new[] { "Foo", "Foo" }, new[] { "Bar", "Bar" }, new[] { "Baz", "Baz" });
+
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "FooBarBaz-0" }, new object[1] { "FooBarBaz-1" }));
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Three_Arg_Within_Batch()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new ThreeArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+            translator, 1, 2, new[] { "Foo0", "Foo1", "Foo2" }, new[] { "Bar0", "Bar1", "Bar2" },
+            new[] { "Baz0", "Baz1", "Baz2" });
+            Assert.True(ringBuffer.TryPublishEvents(
+                translator, 1, 2, new[] { "Foo3", "Foo4", "Foo5" }, new[] { "Bar3", "Bar4", "Bar5" },
+                new[] { "Baz3", "Baz4", "Baz5" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "Foo1Bar1Baz1-0" }, new object[1] { "Foo2Bar2Baz2-1" }, new object[1] { "Foo4Bar4Baz4-2" }, new object[1] { "Foo5Bar5Baz5-3" }));
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_Var_Arg_If_Batch_Is_Larger_Than_RingBuffer()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new VarArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(
+                translator,
+                new[] { "Foo", "Bar", "Baz", "Bam" },
+                new[] { "Foo", "Bar", "Baz", "Bam" },
+                new[] { "Foo", "Bar", "Baz", "Bam" },
+                new[] { "Foo", "Bar", "Baz", "Bam" },
+                new[] { "Foo", "Bar", "Baz", "Bam" }));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Var_Arg_Batch_Size_Of_One()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new VarArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+            translator, 0, 1, new[] { "Foo", "Bar", "Baz", "Bam" }, new[] { "Foo1", "Bar1", "Baz1", "Bam1" });
+            Assert.True(
+
+                ringBuffer.TryPublishEvents(
+                    translator, 0, 1, new[] { "Foo", "Bar", "Baz", "Bam" }, new[] { "Foo2", "Bar2", "Baz2", "Bam2" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "FooBarBazBam-0" }, new object[1] { "FooBarBazBam-1" }));
+        }
+
+        [Fact]
+        public void Should_Publish_Events_Var_Arg_Within_Batch()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new VarArgEventTranslator();
+
+            ringBuffer.PublishEvents(
+            translator, 1, 2, new[] { "Foo0", "Bar0", "Baz0", "Bam0" },
+            new[] { "Foo1", "Bar1", "Baz1", "Bam1" },
+            new[] { "Foo2", "Bar2", "Baz2", "Bam2" });
+            Assert.True(
+                ringBuffer.TryPublishEvents(
+                    translator, 1, 2, new[] { "Foo3", "Bar3", "Baz3", "Bam3" },
+                    new[] { "Foo4", "Bar4", "Baz4", "Bam4" },
+                    new[] { "Foo5", "Bar5", "Baz5", "Bam5" }));
+
+            var matcher = new RingBufferEventMatcher(ringBuffer);
+            Assert.True(matcher.RingBufferWithEvents(new object[1] { "Foo1Bar1Baz1Bam1-0" }, new object[1] { "Foo2Bar2Baz2Bam2-1" }, new object[1] { "Foo4Bar4Baz4Bam4-2" }, new object[1] { "Foo5Bar5Baz5Bam5-3" }));
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_When_Batch_Size_Is_0()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.PublishEvents(new[] { translator, translator, translator, translator }, 1, 0));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Try_Publish_Events_When_Batch_Size_Is_0()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(new[] { translator, translator, translator, translator }, 1, 0));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_When_Batch_Extends_Past_End_Of_Array()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.PublishEvents(new[] { translator, translator, translator }, 1, 3));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Try_Publish_Events_When_Batch_Extends_Past_End_Of_Array()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(new[] { translator, translator, translator }, 1, 3));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_When_Batch_Size_Is_Negative()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.PublishEvents(new[] { translator, translator, translator }, 1, -1));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Try_Publish_Events_When_Batch_Size_Is_Negative()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(new[] { translator, translator, translator }, 1, -1));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Publish_Events_When_Batch_Starts_At_Is_Negative()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.PublishEvents(new[] { translator, translator, translator }, -1, 2));
+
+            AssertEmptyRingBuffer(ringBuffer);
+        }
+
+        [Fact]
+        public void Should_Not_Try_Publish_Events_When_Batch_Starts_At_Is_Negative()
+        {
+            var ringBuffer = RingBuffer<object[]>.CreateSingleProducer(new ArrayFactory(1), 4);
+            var translator = new NoArgEventTranslator();
+
+            Assert.Throws<ArgumentException>(() => ringBuffer.TryPublishEvents(new[] { translator, translator, translator }, -1, 2));
+
+            AssertEmptyRingBuffer(ringBuffer);
         }
 
         private Task<List<StubEvent>> GetMessages(long initial, long toWaitFor)
