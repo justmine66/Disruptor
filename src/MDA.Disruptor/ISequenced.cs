@@ -39,9 +39,9 @@
         /// sequencer.publish(lo, hi);
         /// </code>
         /// </summary>
-        /// <param name="n">the number of sequences to claim</param>
-        /// <returns>the highest claimed sequence value</returns>
-        long Next(int n);
+        /// <param name="requiredCapacity">the number of sequences to claim.</param>
+        /// <returns>the highest claimed sequence value.</returns>
+        long Next(int requiredCapacity);
 
         /// <summary>
         /// Attempt to claim the next event in sequence for publishing. Will return the number of the slot if there is at least<code>requiredCapacity</code> slots available.

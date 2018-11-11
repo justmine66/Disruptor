@@ -74,11 +74,11 @@ namespace MDA.Disruptor.Impl
             return Next(1);
         }
 
-        public override long Next(int n)
+        public override long Next(int requiredCapacity)
         {
-            if (n < 1)
+            if (requiredCapacity < 1)
             {
-                throw new ArgumentException($"{nameof(n)} must be > 0");
+                throw new ArgumentException($"{nameof(requiredCapacity)} must be > 0");
             }
 
             long next;
@@ -88,7 +88,7 @@ namespace MDA.Disruptor.Impl
             do
             {
                 current = Cursor.GetValue();
-                next = current + n;
+                next = current + requiredCapacity;
 
                 var wrapPoint = next - BufferSize;
                 var cachedGatingSequence = _gatingSequenceCache.GetValue();
@@ -120,11 +120,11 @@ namespace MDA.Disruptor.Impl
             return TryNext(1, out sequence);
         }
 
-        public override bool TryNext(int n, out long sequence)
+        public override bool TryNext(int requiredCapacity, out long sequence)
         {
-            if (n < 1)
+            if (requiredCapacity < 1)
             {
-                throw new ArgumentException($"{n} must be > 0");
+                throw new ArgumentException($"{requiredCapacity} must be > 0");
             }
 
             long current;
@@ -133,9 +133,9 @@ namespace MDA.Disruptor.Impl
             do
             {
                 current = Cursor.GetValue();
-                next = current + n;
+                next = current + requiredCapacity;
 
-                if (!HasAvailableCapacity(GatingSequences, n, current))
+                if (!HasAvailableCapacity(GatingSequences, requiredCapacity, current))
                 {
                     throw InsufficientCapacityException.Instance;
                 }
