@@ -60,7 +60,7 @@ namespace MDA.Disruptor.Impl
 
         private void Fill(IEventFactory<TEvent> eventFactory)
         {
-            for (int i = 0; i < BufferSize; i++)
+            for (var i = 0; i < BufferSize; i++)
             {
                 _entries[BufferPad + i] = eventFactory.NewInstance();
             }
@@ -68,7 +68,7 @@ namespace MDA.Disruptor.Impl
 
         private void Fill(Func<TEvent> eventFactory)
         {
-            for (int i = 0; i < BufferSize; i++)
+            for (var i = 0; i < BufferSize; i++)
             {
                 _entries[BufferPad + i] = eventFactory();
             }
