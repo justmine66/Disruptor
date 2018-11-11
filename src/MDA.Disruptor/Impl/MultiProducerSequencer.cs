@@ -43,8 +43,8 @@ namespace MDA.Disruptor.Impl
 
         public override bool IsAvailable(long sequence)
         {
-            int index = CalculateIndex(sequence);
-            int flag = CalculateAvailabilityFlag(sequence);
+            var index = CalculateIndex(sequence);
+            var flag = CalculateAvailabilityFlag(sequence);
 
             return Volatile.Read(ref _availableBuffer[index]) == flag;
         }
@@ -170,7 +170,7 @@ namespace MDA.Disruptor.Impl
 
         private void InitialiseAvailableBuffer()
         {
-            for (int i = _availableBuffer.Length - 1; i != 0; i--)
+            for (var i = _availableBuffer.Length - 1; i != 0; i--)
             {
                 SetAvailableBufferValue(i, -1);
             }
