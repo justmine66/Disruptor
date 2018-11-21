@@ -58,10 +58,10 @@ namespace Disruptor.Impl
 
         public override long GetRemainingCapacity()
         {
-            long nextValue = CachedValue;
+            var nextValue = CachedValue;
 
-            long consumed = SequenceGroupManager.GetMinimumSequence(GatingSequences, nextValue);
-            long produced = nextValue;
+            var consumed = SequenceGroupManager.GetMinimumSequence(GatingSequences, nextValue);
+            var produced = nextValue;
             return BufferSize - (produced - consumed);
         }
 
@@ -87,11 +87,11 @@ namespace Disruptor.Impl
                 throw new ArgumentException($"{nameof(n)} must greater than 1.");
             }
 
-            long nextValue = NextValue;
+            var nextValue = NextValue;
 
-            long nextSequence = nextValue + n;
-            long wrapPoint = nextSequence - BufferSize;
-            long cachedGatingSequence = CachedValue;
+            var nextSequence = nextValue + n;
+            var wrapPoint = nextSequence - BufferSize;
+            var cachedGatingSequence = CachedValue;
 
             if (wrapPoint > cachedGatingSequence || cachedGatingSequence > nextValue)
             {
