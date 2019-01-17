@@ -1,5 +1,6 @@
 ﻿using Disruptor.Impl;
 using Disruptor.Test.Support;
+using System;
 using Xunit;
 
 namespace Disruptor.Test
@@ -24,7 +25,7 @@ namespace Disruptor.Test
         [Fact(DisplayName = "等待超时异常")]
         public void Should_Timeout_WaitFor()
         {
-            Assert.Throws<Exceptions.TimeoutException>(() => _strategy.WaitFor(6, _cursor, _dependent, _barrier));
+            Assert.Throws<TimeoutException>(() => _strategy.WaitFor(6, _cursor, _dependent, _barrier));
         }
     }
 }

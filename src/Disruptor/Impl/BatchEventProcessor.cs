@@ -164,7 +164,7 @@ namespace Disruptor.Impl
 
                     _sequence.SetValue(availableSequence);
                 }
-                catch (Exceptions.TimeoutException)
+                catch (TimeoutException)
                 {
                     NotifyTimeout(_sequence.GetValue());
                 }

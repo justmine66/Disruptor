@@ -1,7 +1,6 @@
 ﻿using Disruptor.Infrastracture;
 using System;
 using System.Threading;
-using TimeoutException = Disruptor.Exceptions.TimeoutException;
 
 namespace Disruptor.Impl
 {
@@ -53,7 +52,7 @@ namespace Disruptor.Impl
                         barrier.CheckAlert();
                         if (!Monitor.Wait(_mutex, _timeoutInMillis))
                         {
-                            throw TimeoutException.Instance;
+                            throw new TimeoutException();
                         }
                     } while (cursor.GetValue() < sequence);
                 }

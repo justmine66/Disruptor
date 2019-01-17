@@ -325,7 +325,7 @@ namespace Disruptor.Bootstrap
             {
                 Shutdown(Timeout.InfiniteTimeSpan);
             }
-            catch (Exceptions.TimeoutException e)
+            catch (TimeoutException e)
             {
                 _exceptionHandler.HandleOnShutdownException(e);
             }
@@ -345,7 +345,7 @@ namespace Disruptor.Bootstrap
             {
                 if (timeOutAt.Ticks > 0 && DateTime.UtcNow > timeOutAt)
                 {
-                    throw Exceptions.TimeoutException.Instance;
+                    throw new TimeoutException();
                 }
             }
 

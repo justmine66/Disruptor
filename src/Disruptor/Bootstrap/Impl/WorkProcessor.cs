@@ -129,7 +129,7 @@ namespace Disruptor.Bootstrap.Impl
                         cachedAvailableSequence = _barrier.WaitFor(nextSequence);
                     }
                 }
-                catch (Exceptions.TimeoutException)
+                catch (TimeoutException)
                 {
                     NotifyTimeout(_sequence.GetValue());
                 }

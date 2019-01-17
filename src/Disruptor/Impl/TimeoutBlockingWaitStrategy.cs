@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace Disruptor.Impl
 {
@@ -31,7 +32,7 @@ namespace Disruptor.Impl
                         barrier.CheckAlert();
                         if (!Monitor.Wait(_mutex, timeoutInMillis))
                         {
-                            throw Exceptions.TimeoutException.Instance;
+                            throw new TimeoutException();
                         }
                     }
                 }
