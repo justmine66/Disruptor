@@ -27,7 +27,7 @@
         /// The current alert status for the barrier.
         /// true if in alert otherwise false.
         /// </summary>
-        bool Alerted { get; }
+        bool IsAlerted { get; }
 
         /// <summary>
         /// Alert the <see cref="IEventProcessor"/> of a status change and stay in this status until cleared.
