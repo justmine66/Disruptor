@@ -56,7 +56,7 @@ namespace Disruptor.Impl
 
         public override string ToString()
         {
-            return string.Format("[mutex:{0},millisecondsTimeout:{1}]", _mutex, _timeoutInMillis);
+            return $"[mutex:{_mutex},millisecondsTimeout:{_timeoutInMillis}]";
         }
     }
 }
