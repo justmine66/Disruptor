@@ -26,7 +26,7 @@ namespace Disruptor.Impl
             _dependentSequence = 0 == dependentSequences.Length ? cursorSequence : new FixedSequenceGroup(dependentSequences);
         }
 
-        public bool IsAlerted => _alerted;
+        public bool Alerted => _alerted;
 
         public void Alert()
         {

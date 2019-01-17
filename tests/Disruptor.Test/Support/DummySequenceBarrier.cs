@@ -2,7 +2,7 @@
 {
     public class DummySequenceBarrier : ISequenceBarrier
     {
-        public bool IsAlerted => false;
+        public bool Alerted => false;
 
         public void Alert()
         {
