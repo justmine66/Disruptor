@@ -1,20 +1,20 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Disruptor.Bootstrap.Impl
 {
-    public class NewSingleThreadExecutor : IExecutor
+    public class BasicExecutor : IExecutor
     {
         private readonly TaskScheduler _scheduler;
 
-        private readonly BlockingCollection<Thread> _threads;
+        private readonly ImmutableList<Thread> _threads;
 
-        public NewSingleThreadExecutor(TaskScheduler scheduler)
+        public BasicExecutor(TaskScheduler scheduler = default(TaskScheduler))
         {
-            _scheduler = scheduler;
-            _threads = new BlockingCollection<Thread>();
+            _scheduler = scheduler ?? TaskScheduler.Default;
+            _threads = ImmutableList.Create<Thread>();
         }
 
         public async Task ExecuteAsync(IRunnable command)
@@ -35,7 +35,7 @@ namespace Disruptor.Bootstrap.Impl
             }
             finally
             {
-                _threads.Take();
+                _threads.Remove(workerThread);
             }
         }
 

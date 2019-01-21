@@ -54,7 +54,7 @@ namespace Disruptor.Bootstrap
         /// <param name="ringBufferSize">the size of the ring buffer.</param>
         /// <param name="taskScheduler">a <see cref="TaskScheduler"/> to create threads to for processors.</param>
         public Disruptor(IEventFactory<T> eventFactory, int ringBufferSize, TaskScheduler taskScheduler)
-            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new NewSingleThreadExecutor(taskScheduler))
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new BasicExecutor(taskScheduler))
         {
         }
 
@@ -65,7 +65,7 @@ namespace Disruptor.Bootstrap
         /// <param name="ringBufferSize">the size of the ring buffer.</param>
         /// <param name="taskScheduler">a <see cref="TaskScheduler"/> to create threads to for processors.</param>
         public Disruptor(Func<T> eventFactory, int ringBufferSize, TaskScheduler taskScheduler)
-            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new NewSingleThreadExecutor(taskScheduler))
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new BasicExecutor(taskScheduler))
         {
         }
 
@@ -85,7 +85,7 @@ namespace Disruptor.Bootstrap
             IWaitStrategy waitStrategy)
             : this(
             RingBuffer<T>.Create(producerType, eventFactory, ringBufferSize, waitStrategy),
-            new NewSingleThreadExecutor(taskScheduler))
+            new BasicExecutor(taskScheduler))
         {
         }
 
@@ -110,7 +110,7 @@ namespace Disruptor.Bootstrap
             IWaitStrategy waitStrategy)
             : this(
             RingBuffer<T>.Create(producerType, eventFactory, ringBufferSize, waitStrategy),
-            new NewSingleThreadExecutor(taskScheduler))
+            new BasicExecutor(taskScheduler))
         {
         }
 
