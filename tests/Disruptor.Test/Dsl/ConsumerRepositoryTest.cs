@@ -45,5 +45,18 @@ namespace Disruptor.Test.Dsl
         {
             Assert.Null(_repository.GetBarrierFor(_handler1));
         }
+
+        [Fact]
+        public void ShouldGetLastEventProcessorsInChain()
+        {
+            _repository.Add(_processor1, _handler1, _barrier1);
+            _repository.Add(_processor2, _handler2, _barrier2);
+
+            _repository.UnMarkEventProcessorsAsEndOfChain(_processor2.GetSequence());
+            var sequences = _repository.GetLastSequenceInChain(true);
+
+            Assert.Single(sequences);
+            Assert.Equal(sequences[0],_processor1.GetSequence());
+        }
     }
 }
