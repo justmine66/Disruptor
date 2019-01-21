@@ -104,7 +104,7 @@ namespace Disruptor.Dsl
 
         private EventProcessorInfo<T> GetEventProcessorInfo(IEventHandler<T> handler)
         {
-            return _eventProcessorInfoByEventHandler[handler];
+            return _eventProcessorInfoByEventHandler.TryGetValue(handler, out var value) ? value : default(EventProcessorInfo<T>);
         }
 
         private IConsumerInfo GetEventProcessorInfo(ISequence barrierEventProcessor)
