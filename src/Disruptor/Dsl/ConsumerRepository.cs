@@ -59,14 +59,15 @@ namespace Disruptor.Dsl
 
         public ISequence[] GetLastSequenceInChain(bool includeStopped)
         {
+            if (_consumerInfos == null)
+                return default(ISequence[]);
+
             var lastSequence = new List<ISequence>();
             foreach (var consumerInfo in _consumerInfos)
             {
-                if ((includeStopped || consumerInfo.IsRunning()) && consumerInfo.IsEndOfChain())
-                {
-                    var sequences = consumerInfo.GetSequences();
-                    lastSequence.AddRange(sequences);
-                }
+                if ((!includeStopped && !consumerInfo.IsRunning()) || !consumerInfo.IsEndOfChain()) continue;
+                var sequences = consumerInfo.GetSequences();
+                lastSequence.AddRange(sequences);
             }
 
             return lastSequence.ToArray();
