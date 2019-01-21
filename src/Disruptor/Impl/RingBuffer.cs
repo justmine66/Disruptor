@@ -2,6 +2,7 @@
 using Disruptor.Utility;
 using System;
 using Disruptor.Bootstrap;
+using Disruptor.Dsl;
 
 namespace Disruptor.Impl
 {
