@@ -60,7 +60,7 @@ namespace Disruptor.ConsoleTest.Example
         public static async Task RunAsync()
         {
             var factory = new EventFactory();
-            Disruptor<MyEvent> disruptor = new Disruptor<MyEvent>(factory, 1024, TaskScheduler.Default);
+            var disruptor = new Disruptor<MyEvent>(factory, 1024, TaskScheduler.Default);
 
             var handler1 = new EventHandler1();
             var handler2 = new EventHandler2();
