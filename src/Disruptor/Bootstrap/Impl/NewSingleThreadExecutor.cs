@@ -41,9 +41,7 @@ namespace Disruptor.Bootstrap.Impl
 
         public override string ToString()
         {
-            return "BasicExecutor{" +
-                   "threads=" + DumpThreadInfo() +
-                   '}';
+            return $"{{threads:{DumpThreadInfo()}}}";
         }
 
         private string DumpThreadInfo()
@@ -55,10 +53,12 @@ namespace Disruptor.Bootstrap.Impl
                 sb.Append("name=").Append(t.Name).Append(",");
                 sb.Append("id=").Append(t.ManagedThreadId).Append(",");
                 sb.Append("state=").Append(t.ThreadState);
-                sb.Append("}");
+                sb.Append("},");
             }
 
-            return sb.ToString();
+            var output = sb.ToString();
+
+            return $"[{output.Substring(0, output.Length - 1)}]";
         }
     }
 }
