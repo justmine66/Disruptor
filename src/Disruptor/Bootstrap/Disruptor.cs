@@ -458,7 +458,7 @@ namespace Disruptor.Bootstrap
         {
             if (Interlocked.Exchange(ref _started, 1) == 1)
             {
-                throw new IllegalStateException("Disruptor.start() must only be called once.");
+                throw new IllegalStateException($"{nameof(StartAsync)} must only be called once.");
             }
         }
 
