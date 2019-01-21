@@ -90,6 +90,8 @@ namespace Disruptor.Dsl
 
         public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] sequences)
         {
+            if (sequences == null) return;
+
             foreach (var sequence in sequences)
             {
                 GetEventProcessorInfo(sequence).MarkAsUsedInBarrier();
