@@ -1,5 +1,4 @@
 ﻿using Disruptor.Impl;
-using Disruptor.Utility;
 using System.Collections;
 using Xunit;
 
