@@ -1,7 +1,7 @@
-﻿using Disruptor.Test.Support;
+﻿using Disruptor.Dsl;
+using Disruptor.Test.Support;
 using System.Collections.Generic;
 using System.Threading;
-using Disruptor.Bootstrap;
 
 namespace Disruptor.Test
 {
