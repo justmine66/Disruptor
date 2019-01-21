@@ -49,7 +49,7 @@ namespace Disruptor.Bootstrap.Impl
 
         public void Halt()
         {
-            _processor.Run();
+            _processor.Halt();
         }
 
         public bool IsEndOfChain()
