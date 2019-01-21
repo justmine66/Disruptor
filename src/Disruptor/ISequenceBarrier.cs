@@ -1,4 +1,6 @@
-﻿namespace Disruptor
+﻿using System;
+
+namespace Disruptor
 {
     using Exceptions;
 
