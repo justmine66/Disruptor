@@ -39,7 +39,7 @@ namespace Disruptor.Dsl
             var numWorkers = workHandlers.Length;
             _workProcessors = new WorkProcessor<T>[numWorkers];
 
-            for (int i = 0; i < numWorkers; i++)
+            for (var i = 0; i < numWorkers; i++)
             {
                 _workProcessors[i] = new WorkProcessor<T>(
                     ringBuffer,
