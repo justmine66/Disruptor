@@ -1,5 +1,4 @@
-﻿using System;
-using Disruptor.Dsl;
+﻿using Disruptor.Dsl;
 using Disruptor.Test.Dsl.Stubs;
 using Disruptor.Test.Support;
 using Xunit;
