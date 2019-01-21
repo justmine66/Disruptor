@@ -87,7 +87,7 @@ namespace Disruptor.Dsl
         public ISequence[] GetWorkerSequences()
         {
             var sequences = new ISequence[_workProcessors.Length + 1];
-            for (int i = 0; i < _workProcessors.Length; i++)
+            for (var i = 0; i < _workProcessors.Length; i++)
             {
                 sequences[i] = _workProcessors[i].GetSequence();
             }
