@@ -1,8 +1,6 @@
-﻿using Disruptor.Exceptions;
-using Disruptor.Utility;
+﻿using Disruptor.Dsl;
+using Disruptor.Exceptions;
 using System;
-using Disruptor.Bootstrap;
-using Disruptor.Dsl;
 
 namespace Disruptor.Impl
 {

@@ -1,7 +1,6 @@
-﻿using Disruptor.Bootstrap;
+﻿using Disruptor.Dsl;
 using System;
 using System.Threading.Tasks;
-using Disruptor.Dsl;
 
 namespace Disruptor.ConsoleTest.Example
 {
