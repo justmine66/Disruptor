@@ -88,11 +88,11 @@ namespace Disruptor.Dsl
             return GetEventProcessorFor(handler).GetSequence();
         }
 
-        public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] barrierEventProcessors)
+        public void UnMarkEventProcessorsAsEndOfChain(params ISequence[] sequences)
         {
-            foreach (var barrierEventProcessor in barrierEventProcessors)
+            foreach (var sequence in sequences)
             {
-                GetEventProcessorInfo(barrierEventProcessor).MarkAsUsedInBarrier();
+                GetEventProcessorInfo(sequence).MarkAsUsedInBarrier();
             }
         }
 
