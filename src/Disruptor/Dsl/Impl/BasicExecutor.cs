@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Disruptor.Dsl.Impl
 {
-    public class BasicExecutor : IExecutor
+    public class BasicExecutor : IAsyncExecutor
     {
         private readonly TaskScheduler _scheduler;
 

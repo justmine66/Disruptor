@@ -5,7 +5,7 @@ namespace Disruptor.Dsl
     /// <summary>
     /// Providing threads for running the command.
     /// </summary>
-    public interface IExecutor
+    public interface IAsyncExecutor
     {
         /// <summary>
         /// Execute the given commands asynchronously in other thread.

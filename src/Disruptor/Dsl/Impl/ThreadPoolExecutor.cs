@@ -2,7 +2,7 @@
 
 namespace Disruptor.Dsl.Impl
 {
-    public class ThreadPoolExecutor : IExecutor
+    public class ThreadPoolExecutor : IAsyncExecutor
     {
         public async Task ExecuteAsync(IRunnable command)
         {

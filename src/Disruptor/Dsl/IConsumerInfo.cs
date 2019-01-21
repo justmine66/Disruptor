@@ -7,7 +7,7 @@ namespace Disruptor.Dsl
         ISequence[] GetSequences();
         ISequenceBarrier GetBarrier();
         bool IsEndOfChain();
-        Task StartAsync(IExecutor executor);
+        Task StartAsync(IAsyncExecutor executor);
         void Halt();
         void MarkAsUsedInBarrier();
         bool IsRunning();

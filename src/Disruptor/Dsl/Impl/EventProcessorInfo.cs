@@ -67,7 +67,7 @@ namespace Disruptor.Dsl.Impl
             _endOfChain = false;
         }
 
-        public async Task StartAsync(IExecutor executor)
+        public async Task StartAsync(IAsyncExecutor executor)
         {
             await executor.ExecuteAsync(_processor);
         }

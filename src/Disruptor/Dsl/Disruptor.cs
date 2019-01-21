@@ -26,7 +26,7 @@ namespace Disruptor.Dsl
     public class Disruptor<T> where T : class
     {
         private readonly RingBuffer<T> _ringBuffer;
-        private readonly IExecutor _executor;
+        private readonly IAsyncExecutor _executor;
         private readonly ConsumerRepository<T> _consumerRepository;
 
         private IExceptionHandler<T> _exceptionHandler;
@@ -38,8 +38,8 @@ namespace Disruptor.Dsl
         /// Private constructor helper
         /// </summary>
         /// <param name="ringBuffer"></param>
-        /// <param name="executor">an <see cref="IExecutor"/> to execute event processors.</param>
-        private Disruptor(RingBuffer<T> ringBuffer, IExecutor executor)
+        /// <param name="executor">an <see cref="IAsyncExecutor"/> to execute event processors.</param>
+        private Disruptor(RingBuffer<T> ringBuffer, IAsyncExecutor executor)
         {
             _ringBuffer = ringBuffer;
             _executor = executor;

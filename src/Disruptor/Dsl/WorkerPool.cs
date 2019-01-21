@@ -102,7 +102,7 @@ namespace Disruptor.Dsl
         /// <param name="executor">providing threads for running the workers.</param>
         /// <returns>the <see cref="RingBuffer{TEvent}"/> used for the work queue.</returns>
         /// <exception cref="IllegalStateException">if the pool has already been started and not halted yet.</exception>
-        public async Task<RingBuffer<T>> StartAsync(IExecutor executor)
+        public async Task<RingBuffer<T>> StartAsync(IAsyncExecutor executor)
         {
             if (Interlocked.Exchange(ref _started, 1) == 1)
             {
