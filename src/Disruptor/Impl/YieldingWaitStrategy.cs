@@ -19,7 +19,7 @@ namespace Disruptor.Impl
         public long WaitFor(long sequence, ISequence cursor, ISequence dependentSequence, ISequenceBarrier barrier)
         {
             long availableSequence;
-            int counter = SpinTries;
+            var counter = SpinTries;
 
             while ((availableSequence = dependentSequence.GetValue()) < sequence)
             {
