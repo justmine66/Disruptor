@@ -4,7 +4,7 @@ using System.Threading;
 namespace Disruptor.Impl
 {
     /// <summary p="This strategy can be used when throughput and low-latency are not as important as CPU resource.">
-    /// Blocking strategy that uses a lock and condition variable for <see cref="IEventProcessor"/>s waiting on a barrier. However it will periodically wake up if it has been idle for specified period by throwing a <see cref="Exceptions.TimeoutException"/>. To make use of this, the event handler class should implement the <see cref="ITimeoutHandler"/>, which the <see cref="IBatchEventProcessor{TEvent}"/> will call if the timeout occurs.
+    /// Blocking strategy that uses a lock and condition variable for <see cref="IEventProcessor"/>s waiting on a barrier. However it will periodically wake up if it has been idle for specified period by throwing a <see cref="TimeoutException"/>. To make use of this, the event handler class should implement the <see cref="ITimeoutHandler"/>, which the <see cref="IBatchEventProcessor{TEvent}"/> will call if the timeout occurs.
     /// </summary>
     public class TimeoutBlockingWaitStrategy : IWaitStrategy
     {
