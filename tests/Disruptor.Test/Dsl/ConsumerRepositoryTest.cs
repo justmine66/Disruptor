@@ -56,7 +56,16 @@ namespace Disruptor.Test.Dsl
             var sequences = _repository.GetLastSequenceInChain(true);
 
             Assert.Single(sequences);
-            Assert.Equal(sequences[0],_processor1.GetSequence());
+            Assert.Equal(sequences[0], _processor1.GetSequence());
+        }
+
+        [Fact]
+        public void ShouldRetrieveEventProcessorForHandler()
+        {
+            _repository.Add(_processor1, _handler1, _barrier1);
+            var processor = _repository.GetEventProcessorFor(_handler1);
+
+            Assert.Equal(processor,_processor1);
         }
     }
 }
