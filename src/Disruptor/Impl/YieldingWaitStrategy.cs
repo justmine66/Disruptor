@@ -13,7 +13,7 @@ namespace Disruptor.Impl
 
         public void SignalAllWhenBlocking()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public long WaitFor(long sequence, ISequence cursor, ISequence dependentSequence, ISequenceBarrier barrier)
