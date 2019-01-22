@@ -1,5 +1,5 @@
 # Disruptor
-.NET standard 2.0 implemention of LMAX Disruptor.
+.NET standard 2.0 implemention of [LMAX Disruptor](https://github.com/LMAX-Exchange/disruptor).
 
 # 定义
 MDA组件间通信的中枢神经系统。
