@@ -78,7 +78,7 @@ namespace Disruptor.Dsl
             var eventProcessorInfo = GetEventProcessorInfo(handler);
             if (eventProcessorInfo == null)
             {
-                throw new ArgumentNullException("The event handler " + handler + " is not processing events.");
+                throw new ArgumentException("The event handler " + handler + " is not processing events.");
             }
 
             return eventProcessorInfo.GetEventProcessor();
