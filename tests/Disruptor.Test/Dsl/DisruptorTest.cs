@@ -2,6 +2,7 @@
 using Disruptor.Impl;
 using Disruptor.Test.Dsl.Stubs;
 using Disruptor.Test.Support;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace Disruptor.Test.Dsl
 
             if (!eventCounter.Wait(5))
             {
-                Assert.False(true, $"Did not process event published before start was called. Missed events: {eventCounter.CurrentCount}");
+                throw new Exception($"Did not process event published before start was called. Missed events: {eventCounter.CurrentCount}");
             }
         }
 
