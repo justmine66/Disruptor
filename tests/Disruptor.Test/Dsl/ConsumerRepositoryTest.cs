@@ -1,6 +1,8 @@
 ﻿using Disruptor.Dsl;
+using Disruptor.Dsl.Impl;
 using Disruptor.Test.Dsl.Stubs;
 using Disruptor.Test.Support;
+using System;
 using Xunit;
 
 namespace Disruptor.Test.Dsl
@@ -65,7 +67,46 @@ namespace Disruptor.Test.Dsl
             _repository.Add(_processor1, _handler1, _barrier1);
             var processor = _repository.GetEventProcessorFor(_handler1);
 
-            Assert.Equal(processor,_processor1);
+            Assert.Equal(processor, _processor1);
+        }
+
+        [Fact]
+        public void ShouldThrowExceptionWhenHandlerIsNotRegistered()
+        {
+            Assert.Throws<ArgumentException>(() => _repository.GetEventProcessorFor(_handler1));
+        }
+
+        [Fact]
+        public void ShouldIterateAllEventProcessors()
+        {
+            _repository.Add(_processor1, _handler1, _barrier1);
+            _repository.Add(_processor2, _handler2, _barrier2);
+
+            var seen1 = false;
+            var seen2 = false;
+            foreach (var entry in _repository)
+            {
+                var eventProcessorInfo = (EventProcessorInfo<TestEvent>)entry;
+                if (!seen1 &&
+                    eventProcessorInfo.GetEventProcessor() == _processor1 &&
+                    eventProcessorInfo.GetHandler() == _handler1)
+                {
+                    seen1 = true;
+                }
+                else if (!seen2 &&
+                    eventProcessorInfo.GetEventProcessor() == _processor2 &&
+                    eventProcessorInfo.GetHandler() == _handler2)
+                {
+                    seen2 = true;
+                }
+                else
+                {
+                    throw new Exception("Unexpected eventProcessor info: " + eventProcessorInfo);
+                }
+            }
+
+            Assert.True(seen1);
+            Assert.True(seen2);
         }
     }
 }
