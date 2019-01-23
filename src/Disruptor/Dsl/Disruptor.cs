@@ -52,6 +52,28 @@ namespace Disruptor.Dsl
         /// </summary>
         /// <param name="eventFactory">the factory to create events in the ring buffer.</param>
         /// <param name="ringBufferSize">the size of the ring buffer.</param>
+        /// <param name="executor">providing threads for running the command.</param>
+        public Disruptor(IEventFactory<T> eventFactory, int ringBufferSize, IAsyncExecutor executor)
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), executor)
+        {
+        }
+
+        /// <summary>
+        /// Create a new Disruptor. Will default to <see cref="BlockingWaitStrategy"/> and <see cref="ProducerType.Multi"/>.
+        /// </summary>
+        /// <param name="eventFactory">the factory to create events in the ring buffer.</param>
+        /// <param name="ringBufferSize">the size of the ring buffer.</param>
+        /// <param name="executor">providing threads for running the command.</param>
+        public Disruptor(Func<T> eventFactory, int ringBufferSize, IAsyncExecutor executor)
+            : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), executor)
+        {
+        }
+
+        /// <summary>
+        /// Create a new Disruptor. Will default to <see cref="BlockingWaitStrategy"/> and <see cref="ProducerType.Multi"/>.
+        /// </summary>
+        /// <param name="eventFactory">the factory to create events in the ring buffer.</param>
+        /// <param name="ringBufferSize">the size of the ring buffer.</param>
         /// <param name="taskScheduler">a <see cref="TaskScheduler"/> to create threads to for processors.</param>
         public Disruptor(IEventFactory<T> eventFactory, int ringBufferSize, TaskScheduler taskScheduler)
             : this(RingBuffer<T>.CreateMultiProducer(eventFactory, ringBufferSize), new BasicExecutor(taskScheduler))
