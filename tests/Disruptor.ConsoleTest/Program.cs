@@ -14,7 +14,8 @@ namespace Disruptor.ConsoleTest
             //CountdownEventTest.Test1();
             //YieldSleep0Sleep1Test.Test();
             //BarrierTest.Test();
-            await SequentialThreeConsumers.RunAsync();
+            //await SequentialThreeConsumers.RunAsync();
+            BlockingCollectionTest.Test();
 
             Console.Read();
         }
