@@ -164,6 +164,51 @@ namespace Disruptor.Test.Dsl
             EnsureTwoEventsProcessedAccordingToDependencies(countDownLatch);
         }
 
+        [Fact]
+        public void ShouldWaitUntilAllFirstEventProcessorsProcessEventBeforeMakingItAvailableToDependentEventProcessors()
+        {
+            var eventHandler1 = CreateDelayedEventHandler();
+
+            var countDownLatch = new CountdownEvent(2);
+            var eventHandler2 = new EventHandlerStub<TestEvent>(countDownLatch);
+
+            _disruptor
+                .HandleEventsWith(eventHandler1)
+                .Then(eventHandler2);
+
+            EnsureTwoEventsProcessedAccordingToDependencies(countDownLatch, eventHandler1);
+        }
+
+        [Fact]
+        public async Task Should()
+        {
+            var rb = _disruptor.GetRingBuffer();
+            var p1 = new BatchEventProcessor<TestEvent>(
+            rb, rb.NewBarrier(), new SleepingEventHandler());
+            var p2 = new EventProcessorFactory();
+
+            _disruptor
+                .HandleEventsWith(p1)
+                .Then(p2);
+
+            await _disruptor.StartAsync();
+        }
+
+        [Fact]
+        public void ShouldAllowSpecifyingSpecificEventProcessorsToWaitFor()
+        {
+            var handler1 = CreateDelayedEventHandler();
+            var handler2 = CreateDelayedEventHandler();
+
+            var countDownLatch = new CountdownEvent(2);
+            var handlerWithBarrier = new EventHandlerStub<TestEvent>(countDownLatch);
+
+            _disruptor.HandleEventsWith(handler1, handler2);
+            _disruptor.After(handler1, handler2).HandleEventsWith(handlerWithBarrier);
+
+            EnsureTwoEventsProcessedAccordingToDependencies(countDownLatch, handler1, handler2);
+        }
+
         private async Task EnsureTwoEventsProcessedAccordingToDependencies(CountdownEvent countDownLatch, params DelayedEventHandler[] dependencies)
         {
             await PublishEventAsync();
@@ -257,6 +302,14 @@ namespace Disruptor.Test.Dsl
         {
             var released = countDownLatch.Wait(TIMEOUT_IN_SECONDS);
             Assert.True(released);
+        }
+
+        private class EventProcessorFactory : IEventProcessorFactory<TestEvent>
+        {
+            public IEventProcessor CreateEventProcessor(RingBuffer<TestEvent> ringBuffer, ISequence[] barrierSequences)
+            {
+                return new BatchEventProcessor<TestEvent>(ringBuffer, ringBuffer.NewBarrier(barrierSequences), new SleepingEventHandler());
+            }
         }
     }
 }
