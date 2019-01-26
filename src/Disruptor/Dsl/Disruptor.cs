@@ -172,6 +172,9 @@ namespace Disruptor.Dsl
         /// <returns>a <see cref="EventHandlerGroup{T}"/> that can be used to chain dependencies.</returns>
         public EventHandlerGroup<T> HandleEventsWith(params IEventProcessor[] processors)
         {
+            if (processors == null)
+                return null;
+
             foreach (var processor in processors)
             {
                 _consumerRepository.Add(processor);
