@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace Disruptor.Dsl.Impl
 {
@@ -52,7 +53,7 @@ namespace Disruptor.Dsl.Impl
                 sb.Append("{");
                 sb.Append("name=").Append(t.Name).Append(",");
                 sb.Append("id=").Append(t.ManagedThreadId).Append(",");
-                sb.Append("state=").Append(t.ThreadState);
+                sb.Append("state=").Append(Enum.GetName(typeof(ThreadState), t.ThreadState));
                 sb.Append("},");
             }
 
