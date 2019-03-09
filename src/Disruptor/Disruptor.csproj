@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Justmine</Copyright>
+    <PackageProjectUrl>https://github.com/justmine66/Disruptor</PackageProjectUrl>
+    <Description>高性能的并发消息分发组件，目前最要作为MDA（https://github.com/justmine66/MDA）组件间通信的中枢神经系统，快速、可靠、有序、安全地将事件从它们发生的地方发送到它们需要去的地方，让事件在分散的组件中自由轻松地流动。</Description>
+    <RepositoryUrl>https://github.com/justmine66/Disruptor</RepositoryUrl>
+    <RepositoryType>.Net Standart2.0</RepositoryType>
+    <PackageTags>MDA.Disruptor</PackageTags>
+    <Authors>Justmine</Authors>
+    <Company>Justmine</Company>
+    <PackageId>MDA.Disruptor</PackageId>
+    <Product>MDA.Disruptor</Product>
   </PropertyGroup>
 
   <ItemGroup>

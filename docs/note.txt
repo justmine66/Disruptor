@@ -1,0 +1,1 @@
+dotnet nuget push MDA.Disruptor.1.0.0.nupkg -k oy2elysferxi6bss4o5abobky4w2grhevcs3nsyzwu4aga -s https://api.nuget.org/v3/index.json
